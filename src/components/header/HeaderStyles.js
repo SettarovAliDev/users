@@ -2,6 +2,11 @@ import styled from "styled-components";
 import { NavLink } from "react-router-dom";
 
 export const HeaderContainer = styled.header`
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  z-index: 10;
   background-color: #f7f7fc;
   box-shadow: 0px 8px 16px rgba(17, 17, 17, 0.04);
 `;

@@ -8,6 +8,8 @@ export const GlobalStyles = createGlobalStyle`
     --text-color-light-1: #6E7191;
 
     --button-color-grey: #EFF0F6;
+
+    --background-color-white: #ffffff;
   }
 
   *,
@@ -31,5 +33,5 @@ export const GlobalStyles = createGlobalStyle`
 
 export const ContainerStyled = styled.div`
   max-width: 168rem;
-  margin: 0 auto;
+  margin: 8rem auto 0;
 `;
