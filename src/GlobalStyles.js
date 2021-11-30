@@ -1,4 +1,5 @@
 import { createGlobalStyle } from "styled-components";
+import styled from "styled-components";
 
 export const GlobalStyles = createGlobalStyle`
   :root {
@@ -26,4 +27,9 @@ export const GlobalStyles = createGlobalStyle`
     font-family: 'Poppins', sans-serif;
     background: #F7F7FC;
   }
+`;
+
+export const ContainerStyled = styled.div`
+  max-width: 168rem;
+  margin: 0 auto;
 `;
