@@ -18,6 +18,10 @@ export const HeaderContainerInner = styled.div`
   align-items: center;
   max-width: 168rem;
   margin: 0 auto;
+
+  @media screen and (max-width: 1679px) {
+    padding: 0 1rem;
+  }
 `;
 
 export const HeaderLeft = styled.div`
@@ -52,7 +56,8 @@ export const HeaderNavLink = styled(NavLink)`
   color: var(--text-color-dark-2);
 
   &:hover,
-  &:active {
+  &:active,
+  &.active {
     color: var(--text-color-dark-1);
   }
 

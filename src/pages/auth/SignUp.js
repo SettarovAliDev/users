@@ -18,7 +18,7 @@ const SignUp = () => {
         <input id="password" type="password" />
         <AuthIsAdmin>
           <input type="checkbox" id="is-admin" name="is-admin" />
-          <label for="is-admin">is admin</label>
+          <label htmlFor="is-admin">is admin</label>
         </AuthIsAdmin>
 
         <button type="submit">Sign Up</button>

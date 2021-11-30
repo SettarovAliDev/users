@@ -34,4 +34,15 @@ export const GlobalStyles = createGlobalStyle`
 export const ContainerStyled = styled.div`
   max-width: 168rem;
   margin: 8rem auto 0;
+
+  @media screen and (max-width: 1679px) {
+    padding: 0 1rem;
+  }
+`;
+
+export const MainHeading = styled.h2`
+  font-size: 3.6rem;
+  font-weight: 400;
+  letter-spacing: 1px;
+  padding: 6rem 0;
 `;

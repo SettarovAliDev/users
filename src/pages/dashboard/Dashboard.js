@@ -1,8 +1,8 @@
-import Header from "../header/Header";
+import Header from "../../components/header/Header";
 import { ContainerStyled } from "../../GlobalStyles";
+import { MainHeading } from "../../GlobalStyles";
 
 import {
-  DashboardHeading,
   DashboardCards,
   DashboardCard,
   DashboardCardHeading,
@@ -14,7 +14,7 @@ const Dashboard = () => {
     <>
       <Header />
       <ContainerStyled>
-        <DashboardHeading>Dashboard:</DashboardHeading>
+        <MainHeading>Dashboard:</MainHeading>
         <DashboardCards>
           <DashboardCard>
             <DashboardCardHeading>Users:</DashboardCardHeading>
