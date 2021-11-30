@@ -1,4 +1,9 @@
-import { AuthContainer, AuthHeading, AuthForm } from "./AuthStyles";
+import {
+  AuthContainer,
+  AuthHeading,
+  AuthForm,
+  AuthIsAdmin,
+} from "./AuthStyles";
 
 const SignUp = () => {
   return (
@@ -11,6 +16,11 @@ const SignUp = () => {
         <input id="email" type="email" />
         <label htmlFor="password">Password</label>
         <input id="password" type="password" />
+        <AuthIsAdmin>
+          <input type="checkbox" id="is-admin" name="is-admin" />
+          <label for="is-admin">is admin</label>
+        </AuthIsAdmin>
+
         <button type="submit">Sign Up</button>
       </AuthForm>
     </AuthContainer>

@@ -23,6 +23,7 @@ export const AuthForm = styled.form`
     font-weight: 400;
     font-size: 1.8rem;
     line-height: 1.7;
+    cursor: pointer;
     color: var(--text-color-light-1);
   }
 
@@ -33,6 +34,13 @@ export const AuthForm = styled.form`
     background-color: transparent;
     border-bottom: 1px solid var(--text-color-dark-1);
     margin-bottom: 2.5rem;
+
+    &[type="checkbox"] {
+      width: 1.5rem;
+      height: 1.5rem;
+      margin-right: 1.2rem;
+      margin-bottom: 0;
+    }
   }
 
   button {
@@ -47,4 +55,11 @@ export const AuthForm = styled.form`
     border-radius: 1.2rem;
     cursor: pointer;
   }
+`;
+
+export const AuthIsAdmin = styled.div`
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  margin-bottom: 2.5rem;
 `;
