@@ -3,6 +3,7 @@ import {
   AuthHeading,
   AuthForm,
   AuthIsAdmin,
+  AuthLink,
 } from "./AuthStyles";
 
 const SignUp = () => {
@@ -20,8 +21,8 @@ const SignUp = () => {
           <input type="checkbox" id="is-admin" name="is-admin" />
           <label htmlFor="is-admin">is admin</label>
         </AuthIsAdmin>
-
         <button type="submit">Sign Up</button>
+        <AuthLink to="/sign-in">Sign In</AuthLink>
       </AuthForm>
     </AuthContainer>
   );

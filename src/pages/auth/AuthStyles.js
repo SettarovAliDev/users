@@ -1,4 +1,5 @@
 import styled from "styled-components";
+import { Link } from "react-router-dom";
 
 export const AuthContainer = styled.div`
   display: flex;
@@ -55,6 +56,20 @@ export const AuthForm = styled.form`
     border-radius: 1.2rem;
     cursor: pointer;
   }
+`;
+
+export const AuthLink = styled(Link)`
+  align-self: center;
+  padding: 1rem 2.5rem;
+  margin-top: 3rem;
+  font-size: 1.4rem;
+  color: var(--text-color-dark-2);
+  letter-spacing: 0.75px;
+  background-color: var(--button-color-grey);
+  border: none;
+  border-radius: 1.2rem;
+  cursor: pointer;
+  text-decoration: none;
 `;
 
 export const AuthIsAdmin = styled.div`

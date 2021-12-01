@@ -1,4 +1,4 @@
-import { AuthContainer, AuthHeading, AuthForm } from "./AuthStyles";
+import { AuthContainer, AuthHeading, AuthForm, AuthLink } from "./AuthStyles";
 
 const SignIn = () => {
   return (
@@ -10,6 +10,7 @@ const SignIn = () => {
         <label htmlFor="password">Password</label>
         <input id="password" type="password" />
         <button type="submit">Sign In</button>
+        <AuthLink to="/sign-up">Sign Up</AuthLink>
       </AuthForm>
     </AuthContainer>
   );

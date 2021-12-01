@@ -33,7 +33,7 @@ export const GlobalStyles = createGlobalStyle`
 
 export const ContainerStyled = styled.div`
   max-width: 168rem;
-  margin: 8rem auto 0;
+  margin: 8rem auto;
 
   @media screen and (max-width: 1679px) {
     padding: 0 1rem;

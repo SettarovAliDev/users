@@ -1,4 +1,3 @@
-import Header from "../../components/header/Header";
 import { ContainerStyled } from "../../GlobalStyles";
 import { MainHeading } from "../../GlobalStyles";
 
@@ -11,28 +10,25 @@ import {
 
 const Dashboard = () => {
   return (
-    <>
-      <Header />
-      <ContainerStyled>
-        <MainHeading>Dashboard:</MainHeading>
-        <DashboardCards>
-          <DashboardCard>
-            <DashboardCardHeading>Users:</DashboardCardHeading>
-            <DashboardCardQuantity>13</DashboardCardQuantity>
-          </DashboardCard>
-          <DashboardCard>
-            <DashboardCardHeading>Profiles:</DashboardCardHeading>
-            <DashboardCardQuantity>27</DashboardCardQuantity>
-          </DashboardCard>
-          <DashboardCard>
-            <DashboardCardHeading>
-              Profiles over 18 years old:
-            </DashboardCardHeading>
-            <DashboardCardQuantity>20</DashboardCardQuantity>
-          </DashboardCard>
-        </DashboardCards>
-      </ContainerStyled>
-    </>
+    <ContainerStyled>
+      <MainHeading>Dashboard:</MainHeading>
+      <DashboardCards>
+        <DashboardCard>
+          <DashboardCardHeading>Users:</DashboardCardHeading>
+          <DashboardCardQuantity>13</DashboardCardQuantity>
+        </DashboardCard>
+        <DashboardCard>
+          <DashboardCardHeading>Profiles:</DashboardCardHeading>
+          <DashboardCardQuantity>27</DashboardCardQuantity>
+        </DashboardCard>
+        <DashboardCard>
+          <DashboardCardHeading>
+            Profiles over 18 years old:
+          </DashboardCardHeading>
+          <DashboardCardQuantity>20</DashboardCardQuantity>
+        </DashboardCard>
+      </DashboardCards>
+    </ContainerStyled>
   );
 };
 

@@ -17,6 +17,10 @@ export const UsersCard = styled.li`
   background-color: var(--background-color-white);
   color: var(--text-color-dark-2);
 
+  & > *:not(:last-child) {
+    margin-bottom: 2rem;
+  }
+
   @media screen and (max-width: 1679px) {
     width: calc((100% - 3.2rem * 2) / 3);
     min-width: 39.6rem;
