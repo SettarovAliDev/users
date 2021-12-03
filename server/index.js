@@ -3,6 +3,7 @@ const cors = require("cors");
 const path = require("path");
 const bodyParser = require("body-parser");
 const pool = require("./db");
+const jwt = require("jsonwebtoken");
 
 const app = express();
 const port = process.env.PORT || 5000;
@@ -16,7 +17,43 @@ if (process.env.NODE_ENV === "production") {
   app.use(express.static(path.join(__dirname, "../client/build")));
 }
 
+// database
+const db = require("./models");
+const Role = db.role;
+
+// DELETE TABLES AND CREATE NEW
+// db.sequelize.sync({ force: true }).then(() => {
+//   console.log("Drop and Resync Database with { force: true }");
+//   initial();
+// });
+
+// function initial() {
+//   Role.create({
+//     id: 1,
+//     name: "user",
+//   });
+
+//   Role.create({
+//     id: 2,
+//     name: "moderator",
+//   });
+
+//   Role.create({
+//     id: 3,
+//     name: "admin",
+//   });
+// }
+
 // ROUTES
+
+app.get("/getToken", (req, res) => {
+  res.json({ message: "Welcome to application." });
+});
+
+// routes
+require("./routes/auth.routes")(app);
+require("./routes/user.routes")(app);
+
 // Create user
 app.post("/users", async (req, res) => {
   try {
