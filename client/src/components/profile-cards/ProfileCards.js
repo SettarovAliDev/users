@@ -1,4 +1,5 @@
 import ProfileCard from "../profile-card/ProfileCard";
+import ProfileCardNew from "../profile-card/ProfileCardNew";
 
 import { ProfileCardsStyled } from "./ProfileCardsStyles";
 
@@ -10,6 +11,7 @@ const ProfileCards = () => {
       <ProfileCard />
       <ProfileCard />
       <ProfileCard />
+      <ProfileCardNew />
     </ProfileCardsStyled>
   );
 };

@@ -23,16 +23,33 @@ if (process.env.NODE_ENV === "production") {
 // Create user
 app.post("/users", async (req, res) => {
   try {
-    const { username, email, password } = req.body;
+    const { username, email, password, isAdmin } = req.body;
+    const isAdminBit = Number(isAdmin);
     const newUser = await pool.query(
-      "INSERT INTO users (username, email, password) VALUES($1, $2, $3) RETURNING *",
-      [username, email, password]
+      "INSERT INTO users (username, email, password, isAdmin) VALUES($1, $2, $3, $4) RETURNING *",
+      [username, email, password, isAdminBit]
     );
     res.json(newUser.rows[0]);
   } catch (error) {
     console.error(error.message);
+    res.json(error.message);
   }
 });
+
+// Login user
+// app.post("/login", async (req, res) => {
+//   try {
+//     const { email, password } = req.body;
+//     const newUser = await pool.query(
+//       "INSERT INTO users (username, email, password, isAdmin) VALUES($1, $2, $3, $4) RETURNING *",
+//       [username, email, password, isAdminBit]
+//     );
+//     res.json(newUser.rows[0]);
+//   } catch (error) {
+//     console.error(error.message);
+//     res.json(error.message);
+//   }
+// });
 
 // Get all users
 app.get("/users", async (req, res) => {

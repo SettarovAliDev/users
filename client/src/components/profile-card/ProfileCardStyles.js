@@ -12,7 +12,6 @@ export const ProfileCardActions = styled.div`
 
 export const ProfileCardStyled = styled.li`
   min-width: 32rem;
-  width: calc((100% - 13.33rem * 3) / 4);
   list-style: none;
   border-radius: 1.6rem;
   background-color: var(--background-color-white);
@@ -99,4 +98,20 @@ export const ProfileCardIcon = styled.img`
   margin-left: 7px;
   width: 18px;
   height: 18px;
+`;
+
+export const AddCardContainer = styled.div`
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  flex-direction: column;
+  row-gap: 3rem;
+  height: 100%;
+  padding: 3.5rem 3.2rem;
+`;
+
+export const AddCardText = styled.div`
+  font-size: 2rem;
+  letter-spacing: 0.75px;
+  text-align: center;
 `;

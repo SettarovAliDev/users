@@ -42,4 +42,8 @@ export const UserHeading = styled.h2`
   font-weight: 400;
   letter-spacing: 1px;
   padding-bottom: 6rem;
+
+  @media screen and (max-width: 1679px) {
+    text-align: center;
+  }
 `;

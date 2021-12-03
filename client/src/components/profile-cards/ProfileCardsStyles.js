@@ -5,9 +5,8 @@ export const ProfileCardsStyled = styled.ul`
   flex-wrap: wrap;
   column-gap: 13.3rem;
   row-gap: 6rem;
-  justify-content: space-between;
 
   @media screen and (max-width: 1679px) {
-    column-gap: 2rem;
+    justify-content: center;
   }
 `;
