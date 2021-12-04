@@ -12,37 +12,42 @@ const verifyToken = (req, res, next) => {
     });
   }
 
-  jwt.verify(token, config.secret, (err, decoded) => {
+  jwt.verify(token, config.secret, async (err, decoded) => {
     if (err) {
       return res.status(401).send({
         message: "Unauthorized!",
       });
     }
-    req.userId = decoded.id;
-    next();
-  });
-};
 
-const isAdmin = (req, res, next) => {
-  User.findByPk(req.userId).then((user) => {
-    user.getRoles().then((roles) => {
-      for (let i = 0; i < roles.length; i++) {
-        if (roles[i].name === "admin") {
-          req.user = user;
-          next();
-          return;
-        }
-      }
+    const user = await User.findByPk(decoded.id);
 
-      return res.status(403).send({
-        message: "Require Admin Role!",
-      });
+    const token = jwt.sign({ id: user.id }, config.secret, {
+      expiresIn: 86400, // 24 hours
     });
+
+    const authorities = [];
+
+    const roles = await user.getRoles();
+
+    for (let i = 0; i < roles.length; i++) {
+      authorities.push("ROLE_" + roles[i].name.toUpperCase());
+    }
+
+    req.user = {
+      user: {
+        id: user.id,
+        username: user.username,
+        email: user.email,
+        roles: authorities,
+      },
+      jwt: token,
+    };
+
+    next();
   });
 };
 
 const authJwt = {
   verifyToken,
-  isAdmin,
 };
 module.exports = authJwt;

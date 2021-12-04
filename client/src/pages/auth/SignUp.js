@@ -1,6 +1,8 @@
 import { useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
 
+import Spinner from "../../components/spinner/Spinner";
+
 import { registerUser } from "../../store/currentUser/currentUserSlice";
 
 import {
@@ -19,7 +21,8 @@ const SignUp = () => {
   const [isAdmin, setIsAdmin] = useState(false);
 
   const dispatch = useDispatch();
-  const error = useSelector((state) => state.currentUser.error);
+  const error = useSelector((state) => state.currentUser.signUpError);
+  const status = useSelector((state) => state.currentUser.status);
 
   const onChangeUsernameHandler = (e) => {
     setUsername(e.target.value);
@@ -58,7 +61,7 @@ const SignUp = () => {
   return (
     <AuthContainer>
       <AuthHeading>Create your account</AuthHeading>
-      <AuthForm onSubmit={onSubmitHandler}>
+      <AuthForm autocomplete="off" onSubmit={onSubmitHandler}>
         {error && <Error>{error}</Error>}
         <label htmlFor="username">Username</label>
         <input
@@ -67,6 +70,7 @@ const SignUp = () => {
           id="username"
           type="username"
           autoComplete="off"
+          required
         />
         <label htmlFor="email">Email</label>
         <input
@@ -75,6 +79,7 @@ const SignUp = () => {
           id="email"
           type="email"
           autoComplete="off"
+          required
         />
         <label htmlFor="password">Password</label>
         <input
@@ -83,6 +88,7 @@ const SignUp = () => {
           id="password"
           type="password"
           autoComplete="off"
+          required
         />
         <AuthIsAdmin>
           <input
@@ -94,7 +100,13 @@ const SignUp = () => {
           />
           <label htmlFor="is-admin">is admin</label>
         </AuthIsAdmin>
-        <button type="submit">Sign Up</button>
+        <button type="submit">
+          {status === "loading" ? (
+            <Spinner size="3.5rem" />
+          ) : (
+            <span>Sign Up</span>
+          )}
+        </button>
         <AuthLink to="/sign-in">Sign In</AuthLink>
       </AuthForm>
     </AuthContainer>

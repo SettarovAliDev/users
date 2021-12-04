@@ -1,4 +1,5 @@
-import { useDispatch } from "react-redux";
+import { Fragment } from "react";
+import { useDispatch, useSelector } from "react-redux";
 import { logoutCurrentUser } from "../../store/currentUser/currentUserSlice";
 
 import {
@@ -12,13 +13,15 @@ import {
   HeaderNavLink,
 } from "./HeaderStyles";
 
-import avatar from "../../assets/avatar.png";
+import avatarAdmin from "../../assets/avatar-admin.png";
+import avatarUser from "../../assets/avatar-user.png";
 import profiles from "../../assets/profiles.svg";
 import dashboard from "../../assets/dashboard.svg";
 import users from "../../assets/users.svg";
 
 const Header = () => {
   const dispatch = useDispatch();
+  const user = useSelector((state) => state.currentUser.user);
 
   const onLogoutHandler = () => {
     localStorage.removeItem("token");
@@ -29,8 +32,11 @@ const Header = () => {
     <HeaderContainer>
       <HeaderContainerInner>
         <HeaderLeft>
-          <HeaderLogo src={avatar} alt="User avatar" />
-          <HeaderUsername>1White</HeaderUsername>
+          <HeaderLogo
+            src={user?.roles.includes("ROLE_ADMIN") ? avatarAdmin : avatarUser}
+            alt="Avatar"
+          />
+          <HeaderUsername>{user?.username}</HeaderUsername>
         </HeaderLeft>
         <nav>
           <HeaderNavList>
@@ -40,18 +46,22 @@ const Header = () => {
                 <img src={profiles} alt="Profiles" />
               </HeaderNavLink>
             </HeaderNavItem>
-            <HeaderNavItem>
-              <HeaderNavLink to="/dashboard">
-                <div>Dashboard</div>
-                <img src={dashboard} alt="Dashboard" />
-              </HeaderNavLink>
-            </HeaderNavItem>
-            <HeaderNavItem>
-              <HeaderNavLink to="/users">
-                <div>Users</div>
-                <img src={users} alt="Users" />
-              </HeaderNavLink>
-            </HeaderNavItem>
+            {user?.roles.includes("ROLE_ADMIN") && (
+              <Fragment>
+                <HeaderNavItem>
+                  <HeaderNavLink to="/dashboard">
+                    <div>Dashboard</div>
+                    <img src={dashboard} alt="Dashboard" />
+                  </HeaderNavLink>
+                </HeaderNavItem>
+                <HeaderNavItem>
+                  <HeaderNavLink to="/users">
+                    <div>Users</div>
+                    <img src={users} alt="Users" />
+                  </HeaderNavLink>
+                </HeaderNavItem>
+              </Fragment>
+            )}
             <HeaderNavItem>
               <HeaderNavLink to="/sign-in" onClick={onLogoutHandler}>
                 Log out

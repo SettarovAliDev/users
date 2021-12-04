@@ -19,8 +19,8 @@ export const registerUser = createAsyncThunk(
       }
     } catch (error) {
       console.error(error.message);
-      console.error(error.response.data.message);
-      dispatch(setError(error.response.data.message));
+      console.error(error?.response?.data?.message);
+      dispatch(setSignUpError(error.response.data.message));
     }
   }
 );
@@ -28,18 +28,20 @@ export const registerUser = createAsyncThunk(
 export const loginUserByPassword = createAsyncThunk(
   "users/loginUserByPassword",
   async (user, { dispatch }) => {
-    const response = await usersApi.post("api/auth/signin", user, {
-      headers: {
-        "Content-Type": "application/json",
-        Accept: "application/json",
-      },
-    });
-    console.log(response);
-    if (response.data.message) {
-      console.log(response.data.message);
-    } else {
+    try {
+      const response = await usersApi.post("api/auth/signin", user, {
+        headers: {
+          "Content-Type": "application/json",
+          Accept: "application/json",
+        },
+      });
+
       localStorage.setItem("token", JSON.stringify(response.data.jwt));
       dispatch(loginCurrentUser(response.data.user));
+    } catch (error) {
+      console.error(error.message);
+      console.error(error?.response?.data?.message);
+      dispatch(setSignInError(error.response.data.message));
     }
   }
 );
@@ -56,15 +58,9 @@ export const loginUserByToken = createAsyncThunk(
           "x-access-token": token,
         },
       });
-      console.log(response);
-      console.log(token);
-      if (response.data.message) {
-        console.log(response.data.message);
-        localStorage.removeItem("token");
-      } else {
-        // localStorage.setItem("token", JSON.stringify(response.data.jwt));
-        dispatch(loginCurrentUser(response.data));
-      }
+
+      localStorage.setItem("token", JSON.stringify(response.data.jwt));
+      dispatch(loginCurrentUser(response.data.user));
     } catch (error) {
       console.error(error.message);
       console.error(error.response.data.message);
@@ -74,17 +70,26 @@ export const loginUserByToken = createAsyncThunk(
 
 const currentUserSlice = createSlice({
   name: "currentUser",
-  initialState: { user: null, status: "idle", error: null },
+  initialState: {
+    user: null,
+    status: "idle",
+    signUpError: null,
+    signInError: null,
+  },
   reducers: {
     loginCurrentUser(state, action) {
-      console.log(action);
       state.user = action.payload;
     },
     logoutCurrentUser(state, action) {
       state.user = null;
+      state.signInError = null;
+      state.signUpError = null;
     },
-    setError(state, action) {
-      state.error = action.payload;
+    setSignUpError(state, action) {
+      state.signUpError = action.payload;
+    },
+    setSignInError(state, action) {
+      state.signInError = action.payload;
     },
   },
   extraReducers: (builder) => {
@@ -119,6 +124,10 @@ const currentUserSlice = createSlice({
   },
 });
 
-export const { loginCurrentUser, logoutCurrentUser, setError } =
-  currentUserSlice.actions;
+export const {
+  loginCurrentUser,
+  logoutCurrentUser,
+  setSignUpError,
+  setSignInError,
+} = currentUserSlice.actions;
 export default currentUserSlice.reducer;

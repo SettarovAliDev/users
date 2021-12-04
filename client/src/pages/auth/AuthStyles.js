@@ -88,4 +88,5 @@ export const Error = styled.div`
   border-radius: 1.6rem;
   margin-bottom: 2rem;
   border: 1px solid #ff8499;
+  overflow: hidden;
 `;

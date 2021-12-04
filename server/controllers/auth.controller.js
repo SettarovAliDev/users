@@ -8,27 +8,24 @@ const Role = db.role;
 
 const Op = db.Sequelize.Op;
 
-exports.signup = async (req, res) => {
+exports.signup = async (req, res, next) => {
   try {
     const newUser = await User.create({
       username: req.body.username,
       email: req.body.email,
       password: bcrypt.hashSync(req.body.password, 8),
     });
-    if (req.body.roles) {
-      const roles = await Role.findAll({
-        where: {
-          name: {
-            [Op.or]: req.body.roles,
-          },
+
+    const roles = await Role.findAll({
+      where: {
+        name: {
+          [Op.or]: req.body.roles,
         },
-      });
-      await newUser.setRoles(roles);
-      res.send({ message: "User registered successfully!" });
-    } else {
-      await newUser.setRoles([1]);
-      res.send({ message: "User registered successfully!" });
-    }
+      },
+    });
+    await newUser.setRoles(roles);
+
+    next();
   } catch (error) {
     res.status(500).send({ message: error.message });
   }
@@ -42,7 +39,9 @@ exports.signin = async (req, res) => {
       },
     });
     if (!user) {
-      return res.status(404).send({ message: "User Not found." });
+      return res
+        .status(404)
+        .send({ message: `User ${req.body.email} not found` });
     }
     const passwordIsValid = bcrypt.compareSync(
       req.body.password,
@@ -51,7 +50,7 @@ exports.signin = async (req, res) => {
     if (!passwordIsValid) {
       return res.status(401).send({
         accessToken: null,
-        message: "Invalid Password!",
+        message: "Invalid password",
       });
     }
     const token = jwt.sign({ id: user.id }, config.secret, {

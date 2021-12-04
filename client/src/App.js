@@ -2,6 +2,7 @@ import { Fragment, useEffect } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { Routes, Route, Navigate } from "react-router-dom";
 
+import Spinner from "./components/spinner/Spinner";
 import SignIn from "./pages/auth/SignIn";
 import SignUp from "./pages/auth/SignUp";
 import EntireApp from "./pages/entire-app/EntireApp";
@@ -16,7 +17,7 @@ import { loginUserByToken } from "./store/currentUser/currentUserSlice";
 
 const App = () => {
   const dispatch = useDispatch();
-  const currentUser = useSelector((state) => state.currentUser.user);
+  const currentUser = useSelector((state) => state.currentUser);
 
   useEffect(() => {
     if (localStorage.getItem("token")) dispatch(loginUserByToken());
@@ -25,26 +26,38 @@ const App = () => {
   return (
     <Fragment>
       <GlobalStyles />
-      <Routes>
-        <Route path="/" element={<Navigate to="sign-in" />} />
-        <Route
-          path="sign-in"
-          element={currentUser ? <Navigate to="/dashboard" /> : <SignIn />}
-        />
-        <Route
-          path="sign-up"
-          element={currentUser ? <Navigate to="/dashboard" /> : <SignUp />}
-        />
+      {currentUser.status === "loading" ? (
+        <Spinner size="7rem" big />
+      ) : (
+        <Routes>
+          <Route path="/" element={<Navigate to="sign-in" />} />
+          <Route
+            path="sign-in"
+            element={
+              currentUser.user ? <Navigate to="/users/:userId" /> : <SignIn />
+            }
+          />
+          <Route
+            path="sign-up"
+            element={
+              currentUser.user ? <Navigate to="/users/:userId" /> : <SignUp />
+            }
+          />
 
-        {currentUser && (
-          <Route path="/" element={<EntireApp />}>
-            <Route path="dashboard" element={<Dashboard />} />
-            <Route path="users" element={<Users />} />
-            <Route path="users/:userId" element={<User />} />
-          </Route>
-        )}
-        <Route path="*" element={<PageNotFound />} />
-      </Routes>
+          {currentUser.user && (
+            <Route path="/" element={<EntireApp />}>
+              {currentUser?.user?.roles.includes("ROLE_ADMIN") && (
+                <Fragment>
+                  <Route path="dashboard" element={<Dashboard />} />
+                  <Route path="users" element={<Users />} />
+                </Fragment>
+              )}
+              <Route path="users/:userId" element={<User />} />
+            </Route>
+          )}
+          <Route path="*" element={<PageNotFound />} />
+        </Routes>
+      )}
     </Fragment>
   );
 };
