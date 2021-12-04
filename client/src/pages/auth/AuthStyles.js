@@ -78,3 +78,14 @@ export const AuthIsAdmin = styled.div`
   justify-content: center;
   margin-bottom: 2.5rem;
 `;
+
+export const Error = styled.div`
+  text-align: center;
+  padding: 1rem;
+  background-color: white;
+  color: #ff8499;
+  font-size: 2rem;
+  border-radius: 1.6rem;
+  margin-bottom: 2rem;
+  border: 1px solid #ff8499;
+`;

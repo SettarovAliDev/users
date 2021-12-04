@@ -1,3 +1,6 @@
+import { useDispatch } from "react-redux";
+import { logoutCurrentUser } from "../../store/currentUser/currentUserSlice";
+
 import {
   HeaderContainer,
   HeaderContainerInner,
@@ -15,6 +18,13 @@ import dashboard from "../../assets/dashboard.svg";
 import users from "../../assets/users.svg";
 
 const Header = () => {
+  const dispatch = useDispatch();
+
+  const onLogoutHandler = () => {
+    localStorage.removeItem("token");
+    dispatch(logoutCurrentUser());
+  };
+
   return (
     <HeaderContainer>
       <HeaderContainerInner>
@@ -43,7 +53,9 @@ const Header = () => {
               </HeaderNavLink>
             </HeaderNavItem>
             <HeaderNavItem>
-              <HeaderNavLink to="/sign-in">Log out</HeaderNavLink>
+              <HeaderNavLink to="/sign-in" onClick={onLogoutHandler}>
+                Log out
+              </HeaderNavLink>
             </HeaderNavItem>
           </HeaderNavList>
         </nav>

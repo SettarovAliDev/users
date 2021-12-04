@@ -12,14 +12,14 @@ import User from "./pages/users/User";
 
 import { GlobalStyles } from "./GlobalStyles";
 
-import { fetchUsers } from "./store/users/usersSlice";
+import { loginUserByToken } from "./store/currentUser/currentUserSlice";
 
 const App = () => {
   const dispatch = useDispatch();
   const currentUser = useSelector((state) => state.currentUser.user);
 
   useEffect(() => {
-    dispatch(fetchUsers());
+    if (localStorage.getItem("token")) dispatch(loginUserByToken());
   }, [dispatch]);
 
   return (

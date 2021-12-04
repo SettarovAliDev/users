@@ -1,5 +1,5 @@
 import { useState } from "react";
-import { useDispatch } from "react-redux";
+import { useDispatch, useSelector } from "react-redux";
 
 import { registerUser } from "../../store/currentUser/currentUserSlice";
 
@@ -9,6 +9,7 @@ import {
   AuthForm,
   AuthIsAdmin,
   AuthLink,
+  Error,
 } from "./AuthStyles";
 
 const SignUp = () => {
@@ -18,6 +19,7 @@ const SignUp = () => {
   const [isAdmin, setIsAdmin] = useState(false);
 
   const dispatch = useDispatch();
+  const error = useSelector((state) => state.currentUser.error);
 
   const onChangeUsernameHandler = (e) => {
     setUsername(e.target.value);
@@ -43,7 +45,7 @@ const SignUp = () => {
         username,
         email,
         password,
-        isAdmin,
+        roles: isAdmin ? ["user", "admin"] : ["user"],
       })
     );
 
@@ -57,12 +59,14 @@ const SignUp = () => {
     <AuthContainer>
       <AuthHeading>Create your account</AuthHeading>
       <AuthForm onSubmit={onSubmitHandler}>
+        {error && <Error>{error}</Error>}
         <label htmlFor="username">Username</label>
         <input
           value={username}
           onChange={onChangeUsernameHandler}
           id="username"
           type="username"
+          autoComplete="off"
         />
         <label htmlFor="email">Email</label>
         <input
@@ -70,6 +74,7 @@ const SignUp = () => {
           onChange={onChangeEmailHandler}
           id="email"
           type="email"
+          autoComplete="off"
         />
         <label htmlFor="password">Password</label>
         <input
@@ -77,6 +82,7 @@ const SignUp = () => {
           onChange={onChangePasswordHandler}
           id="password"
           type="password"
+          autoComplete="off"
         />
         <AuthIsAdmin>
           <input

@@ -1,7 +1,7 @@
 import { useState } from "react";
 import { useDispatch } from "react-redux";
 
-import { loginUser } from "../../store/currentUser/currentUserSlice";
+import { loginUserByPassword } from "../../store/currentUser/currentUserSlice";
 
 import { AuthContainer, AuthHeading, AuthForm, AuthLink } from "./AuthStyles";
 
@@ -23,7 +23,7 @@ const SignIn = () => {
     e.preventDefault();
 
     dispatch(
-      loginUser({
+      loginUserByPassword({
         email,
         password,
       })

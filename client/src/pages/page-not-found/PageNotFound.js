@@ -1,7 +1,12 @@
-import { PageNotFoundStyled } from "./PageNotFoundStyles";
+import { PageNotFoundStyled, Button } from "./PageNotFoundStyles";
 
 const PageNotFound = () => {
-  return <PageNotFoundStyled>Page not found</PageNotFoundStyled>;
+  return (
+    <PageNotFoundStyled>
+      <div>Page not found</div>
+      <Button to="/">Go home</Button>
+    </PageNotFoundStyled>
+  );
 };
 
 export default PageNotFound;
