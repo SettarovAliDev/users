@@ -8,7 +8,7 @@ const pool = require("./db");
 require("dotenv").config();
 
 const app = express();
-const host = process.env.HOST || "localhost";
+// const host = process.env.HOST || "localhost";
 const port = process.env.PORT || 5000;
 
 // MIDDLEWARE
@@ -121,7 +121,7 @@ if (process.env.NODE_ENV === "production") {
   });
 }
 
-app.listen(port, host, (error) => {
+app.listen(port, (error) => {
   if (error) throw error;
-  console.log(`App listening on http://${host}:${port}`);
+  console.log(`App listening on port ${port}`);
 });
