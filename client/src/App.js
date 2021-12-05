@@ -34,13 +34,13 @@ const App = () => {
           <Route
             path="sign-in"
             element={
-              currentUser.user ? <Navigate to="/users/:userId" /> : <SignIn />
+              currentUser.user ? <Navigate to="/profiles" /> : <SignIn />
             }
           />
           <Route
             path="sign-up"
             element={
-              currentUser.user ? <Navigate to="/users/:userId" /> : <SignUp />
+              currentUser.user ? <Navigate to="/profiles" /> : <SignUp />
             }
           />
 
@@ -50,9 +50,10 @@ const App = () => {
                 <Fragment>
                   <Route path="dashboard" element={<Dashboard />} />
                   <Route path="users" element={<Users />} />
+                  <Route path="users/:userId" element={<User />} />
                 </Fragment>
               )}
-              <Route path="users/:userId" element={<User />} />
+              <Route path="profiles" element={<User />} />
             </Route>
           )}
           <Route path="*" element={<PageNotFound />} />

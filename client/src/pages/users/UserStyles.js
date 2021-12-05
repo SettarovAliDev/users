@@ -1,5 +1,8 @@
 import styled from "styled-components";
 
+import { ReactComponent as EditSvg } from "../../assets/edit.svg";
+import { ReactComponent as DeleteSvg } from "../../assets/delete.svg";
+
 export const UserInfo = styled.div`
   display: flex;
   flex-direction: column;
@@ -27,13 +30,26 @@ export const UserActions = styled.div`
   display: flex;
 `;
 
-export const UserActionImage = styled.img`
+export const EditSvgStyled = styled(EditSvg)`
   cursor: pointer;
   width: 24px;
   height: 24px;
+  stroke: #14142b;
+  margin-right: 3.5rem;
 
-  &:not(:last-child) {
-    margin-right: 3.5rem;
+  &:hover {
+    stroke: #624af2;
+  }
+`;
+
+export const DeleteSvgStyled = styled(DeleteSvg)`
+  cursor: pointer;
+  width: 24px;
+  height: 24px;
+  stroke: #14142b;
+
+  &:hover {
+    stroke: #eb0055;
   }
 `;
 

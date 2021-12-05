@@ -1,5 +1,8 @@
 import styled from "styled-components";
 
+import { ReactComponent as EditSvg } from "../../assets/edit.svg";
+import { ReactComponent as DeleteSvg } from "../../assets/delete.svg";
+
 export const ProfileCardActions = styled.div`
   display: flex;
   visibility: hidden;
@@ -51,6 +54,22 @@ export const ProfileCardDetail = styled.div`
   }
 `;
 
+export const EditSvgStyled = styled(EditSvg)`
+  cursor: pointer;
+  width: 18px;
+  height: 18px;
+  stroke: #4e4b66;
+  margin-left: 7px;
+`;
+
+export const DeleteSvgStyled = styled(DeleteSvg)`
+  cursor: pointer;
+  width: 18px;
+  height: 18px;
+  stroke: #4e4b66;
+  margin-left: 7px;
+`;
+
 export const ProfileCardEdit = styled.button`
   display: flex;
   align-items: center;
@@ -70,6 +89,10 @@ export const ProfileCardEdit = styled.button`
   &:hover {
     background-color: #624af2;
     color: #fcfcfc;
+
+    ${EditSvgStyled} {
+      stroke: #ffffff;
+    }
   }
 `;
 
@@ -91,6 +114,10 @@ export const ProfileCardDelete = styled.button`
   &:hover {
     background-color: #eb0055;
     color: #fcfcfc;
+
+    ${DeleteSvgStyled} {
+      stroke: #ffffff;
+    }
   }
 `;
 

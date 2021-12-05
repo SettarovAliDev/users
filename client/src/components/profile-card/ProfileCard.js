@@ -6,10 +6,9 @@ import {
   ProfileCardActions,
   ProfileCardEdit,
   ProfileCardDelete,
+  EditSvgStyled,
+  DeleteSvgStyled,
 } from "./ProfileCardStyles";
-
-import { ReactComponent as EditIcon } from "../../assets/edit.svg";
-import { ReactComponent as DeleteIcon } from "../../assets/delete.svg";
 
 const ProfileCard = () => {
   return (
@@ -23,11 +22,11 @@ const ProfileCard = () => {
       <ProfileCardActions>
         <ProfileCardEdit>
           <div>Edit</div>
-          <EditIcon />
+          <EditSvgStyled />
         </ProfileCardEdit>
         <ProfileCardDelete>
           <div>Delete</div>
-          <DeleteIcon />
+          <DeleteSvgStyled />
         </ProfileCardDelete>
       </ProfileCardActions>
     </ProfileCardStyled>

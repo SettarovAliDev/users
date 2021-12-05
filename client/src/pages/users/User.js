@@ -6,12 +6,10 @@ import {
   UserDetail,
   UserStatus,
   UserActions,
-  UserActionImage,
+  EditSvgStyled,
+  DeleteSvgStyled,
   UserHeading,
 } from "./UserStyles";
-
-import editImg from "../../assets/edit.svg";
-import deleteImg from "../../assets/delete.svg";
 
 const User = () => {
   return (
@@ -21,8 +19,8 @@ const User = () => {
         <UserDetail>usermail@outlook.com</UserDetail>
         <UserStatus>user</UserStatus>
         <UserActions>
-          <UserActionImage src={editImg} />
-          <UserActionImage src={deleteImg} />
+          <EditSvgStyled />
+          <DeleteSvgStyled />
         </UserActions>
       </UserInfo>
       <UserHeading>Profiles:</UserHeading>
