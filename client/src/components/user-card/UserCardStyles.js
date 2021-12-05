@@ -9,6 +9,11 @@ export const UserCardContainer = styled.li`
   border-radius: 1.6rem;
   background-color: var(--background-color-white);
   color: var(--text-color-dark-2);
+  cursor: pointer;
+
+  &:hover {
+    background-color: #dfffdf;
+  }
 
   & > *:not(:last-child) {
     margin-bottom: 2rem;

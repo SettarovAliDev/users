@@ -1,4 +1,5 @@
 import React from "react";
+import { useNavigate } from "react-router-dom";
 
 import {
   UserCardContainer,
@@ -7,8 +8,9 @@ import {
 } from "./UserCardStyles";
 
 const UserCard = ({ user }) => {
+  const navigate = useNavigate();
   return (
-    <UserCardContainer>
+    <UserCardContainer onClick={() => navigate(`${user.id}`)}>
       <UserCardHeading>{user.username}</UserCardHeading>
       <UserCardSpan>{user.email}</UserCardSpan>
       <UserCardSpan>3 profiles</UserCardSpan>

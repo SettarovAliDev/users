@@ -13,7 +13,7 @@ const Users = () => {
       <MainHeading>Users:</MainHeading>
       <UsersCards>
         {Object.values(users).map((user) => (
-          <UserCard user={user} />
+          <UserCard key={user.id} user={user} />
         ))}
       </UsersCards>
     </ContainerStyled>

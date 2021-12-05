@@ -68,7 +68,7 @@ const SignUp = () => {
           value={username}
           onChange={onChangeUsernameHandler}
           id="username"
-          type="username"
+          type="text"
           autoComplete="off"
           required
         />

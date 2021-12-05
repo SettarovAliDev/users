@@ -42,6 +42,7 @@ if (process.env.NODE_ENV === "production") {
 
 // ROUTES
 require("./routes/auth.routes")(app);
+require("./routes/profile.routes")(app);
 
 // Create user
 app.post("/api/users", async (req, res) => {
