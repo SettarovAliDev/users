@@ -77,3 +77,7 @@ exports.signin = async (req, res) => {
     res.status(500).send({ message: error.message });
   }
 };
+
+exports.login = (req, res) => {
+  res.status(200).send(req.user);
+};

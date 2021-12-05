@@ -51,7 +51,7 @@ export const loginUserByToken = createAsyncThunk(
   async (user, { dispatch }) => {
     try {
       const token = JSON.parse(localStorage.getItem("token"));
-      const response = await usersApi.get("api/test/user", {
+      const response = await usersApi.get("api/auth/login", {
         headers: {
           "Content-Type": "application/json",
           Accept: "application/json",
