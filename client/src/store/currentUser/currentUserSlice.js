@@ -1,6 +1,8 @@
 import { createSlice, createAsyncThunk } from "@reduxjs/toolkit";
 import usersApi from "../../api/usersApi";
 
+import { fetchUsers } from "../users/usersSlice";
+
 export const registerUser = createAsyncThunk(
   "users/registerUser",
   async (user, { dispatch }) => {
@@ -16,6 +18,9 @@ export const registerUser = createAsyncThunk(
       } else {
         localStorage.setItem("token", JSON.stringify(response.data.jwt));
         dispatch(loginCurrentUser(response.data.user));
+        if (response.data.user.roles.includes("ROLE_ADMIN")) {
+          dispatch(fetchUsers());
+        }
       }
     } catch (error) {
       console.error(error.message);
@@ -38,6 +43,9 @@ export const loginUserByPassword = createAsyncThunk(
 
       localStorage.setItem("token", JSON.stringify(response.data.jwt));
       dispatch(loginCurrentUser(response.data.user));
+      if (response.data.user.roles.includes("ROLE_ADMIN")) {
+        dispatch(fetchUsers());
+      }
     } catch (error) {
       console.error(error.message);
       console.error(error?.response?.data?.message);
@@ -61,6 +69,9 @@ export const loginUserByToken = createAsyncThunk(
 
       localStorage.setItem("token", JSON.stringify(response.data.jwt));
       dispatch(loginCurrentUser(response.data.user));
+      if (response.data.user.roles.includes("ROLE_ADMIN")) {
+        dispatch(fetchUsers());
+      }
     } catch (error) {
       console.error(error.message);
       console.error(error.response.data.message);

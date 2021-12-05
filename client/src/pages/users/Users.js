@@ -1,62 +1,20 @@
-import { ContainerStyled, MainHeading } from "../../GlobalStyles";
+import { useSelector } from "react-redux";
 
-import {
-  UsersCards,
-  UsersCard,
-  UsersCardHeading,
-  UsersCardSpan,
-} from "./UsersStyles";
+import UserCard from "../../components/user-card/UserCard";
+
+import { ContainerStyled, MainHeading } from "../../GlobalStyles";
+import { UsersCards } from "./UsersStyles";
 
 const Users = () => {
+  const users = useSelector((state) => state.users.entities);
+
   return (
     <ContainerStyled>
       <MainHeading>Users:</MainHeading>
       <UsersCards>
-        <UsersCard>
-          <UsersCardHeading>1White</UsersCardHeading>
-          <UsersCardSpan>danilo.bilyi@gmail.com</UsersCardSpan>
-          <UsersCardSpan>3 profiles</UsersCardSpan>
-        </UsersCard>
-        <UsersCard>
-          <UsersCardHeading>1White</UsersCardHeading>
-          <UsersCardSpan>danilo.bilyi@gmail.com</UsersCardSpan>
-          <UsersCardSpan>3 profiles</UsersCardSpan>
-        </UsersCard>
-        <UsersCard>
-          <UsersCardHeading>1White</UsersCardHeading>
-          <UsersCardSpan>danilo.bilyi@gmail.com</UsersCardSpan>
-          <UsersCardSpan>3 profiles</UsersCardSpan>
-        </UsersCard>
-        <UsersCard>
-          <UsersCardHeading>1White</UsersCardHeading>
-          <UsersCardSpan>danilo.bilyi@gmail.com</UsersCardSpan>
-          <UsersCardSpan>3 profiles</UsersCardSpan>
-        </UsersCard>
-        <UsersCard>
-          <UsersCardHeading>1White</UsersCardHeading>
-          <UsersCardSpan>danilo.bilyi@gmail.com</UsersCardSpan>
-          <UsersCardSpan>3 profiles</UsersCardSpan>
-        </UsersCard>
-        <UsersCard>
-          <UsersCardHeading>1White</UsersCardHeading>
-          <UsersCardSpan>danilo.bilyi@gmail.com</UsersCardSpan>
-          <UsersCardSpan>3 profiles</UsersCardSpan>
-        </UsersCard>
-        <UsersCard>
-          <UsersCardHeading>1White</UsersCardHeading>
-          <UsersCardSpan>danilo.bilyi@gmail.com</UsersCardSpan>
-          <UsersCardSpan>3 profiles</UsersCardSpan>
-        </UsersCard>
-        <UsersCard>
-          <UsersCardHeading>1White</UsersCardHeading>
-          <UsersCardSpan>danilo.bilyi@gmail.com</UsersCardSpan>
-          <UsersCardSpan>3 profiles</UsersCardSpan>
-        </UsersCard>
-        <UsersCard>
-          <UsersCardHeading>1White</UsersCardHeading>
-          <UsersCardSpan>danilo.bilyi@gmail.com</UsersCardSpan>
-          <UsersCardSpan>3 profiles</UsersCardSpan>
-        </UsersCard>
+        {Object.values(users).map((user) => (
+          <UserCard user={user} />
+        ))}
       </UsersCards>
     </ContainerStyled>
   );

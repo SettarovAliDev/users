@@ -3,7 +3,7 @@ import styled from "styled-components";
 import { ReactComponent as EditSvg } from "../../assets/edit.svg";
 import { ReactComponent as DeleteSvg } from "../../assets/delete.svg";
 
-export const UserInfo = styled.div`
+export const ProfilesInfo = styled.div`
   display: flex;
   flex-direction: column;
   align-items: center;
@@ -14,19 +14,19 @@ export const UserInfo = styled.div`
   }
 `;
 
-export const UserDetail = styled.div`
+export const ProfilesDetail = styled.div`
   font-size: 3.2rem;
   line-height: 1.5;
   font-weight: 400;
 `;
 
-export const UserStatus = styled.div`
+export const ProfilesStatus = styled.div`
   font-size: 2.4rem;
   line-height: 1.5;
   font-weight: 400;
 `;
 
-export const UserActions = styled.div`
+export const ProfilesActions = styled.div`
   display: flex;
 `;
 
@@ -53,7 +53,7 @@ export const DeleteSvgStyled = styled(DeleteSvg)`
   }
 `;
 
-export const UserHeading = styled.h2`
+export const ProfilesHeading = styled.h2`
   font-size: 3.6rem;
   font-weight: 400;
   letter-spacing: 1px;

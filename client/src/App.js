@@ -9,7 +9,7 @@ import EntireApp from "./pages/entire-app/EntireApp";
 import PageNotFound from "./pages/page-not-found/PageNotFound";
 import Dashboard from "./pages/dashboard/Dashboard";
 import Users from "./pages/users/Users";
-import User from "./pages/users/User";
+import Profiles from "./pages/profiles/Profiles";
 
 import { GlobalStyles } from "./GlobalStyles";
 
@@ -50,10 +50,10 @@ const App = () => {
                 <Fragment>
                   <Route path="dashboard" element={<Dashboard />} />
                   <Route path="users" element={<Users />} />
-                  <Route path="users/:userId" element={<User />} />
+                  <Route path="users/:userId" element={<Profiles />} />
                 </Fragment>
               )}
-              <Route path="profiles" element={<User />} />
+              <Route path="profiles" element={<Profiles />} />
             </Route>
           )}
           <Route path="*" element={<PageNotFound />} />

@@ -2,7 +2,8 @@ import { createSlice, createAsyncThunk } from "@reduxjs/toolkit";
 import axios from "axios";
 
 export const fetchUsers = createAsyncThunk("users/fetchUsers", async () => {
-  const response = await axios.get("users");
+  const response = await axios.get("api/users");
+  console.log(response.data);
   return response.data;
 });
 
@@ -27,16 +28,19 @@ const usersSlice = createSlice({
       .addCase(fetchUsers.fulfilled, (state, action) => {
         const newEntities = {};
         action.payload.forEach((user) => {
-          newEntities[user.user_id] = user;
+          newEntities[`${user.id}`] = user;
         });
         state.entities = newEntities;
         state.status = "idle";
       })
       .addCase(fetchUsers.rejected, (state, action) => {
         state.status = "idle";
+      })
+      .addCase("currentUser/logoutCurrentUser", (state, action) => {
+        state.entities = {};
       });
   },
 });
 
-// export const {} = usersSlice.actions;
+export const { addUser } = usersSlice.actions;
 export default usersSlice.reducer;
