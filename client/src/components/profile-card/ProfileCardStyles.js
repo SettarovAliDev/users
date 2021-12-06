@@ -5,6 +5,7 @@ import { ReactComponent as DeleteSvg } from "../../assets/delete.svg";
 
 export const ProfileCardActions = styled.div`
   display: flex;
+  margin-top: auto;
   visibility: hidden;
   opacity: 0;
   border-top: 1px solid #d6d8e7;
@@ -14,6 +15,8 @@ export const ProfileCardActions = styled.div`
 `;
 
 export const ProfileCardStyled = styled.li`
+  display: flex;
+  flex-direction: column;
   min-width: 32rem;
   list-style: none;
   border-radius: 1.6rem;

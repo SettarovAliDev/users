@@ -3,7 +3,7 @@ import { useDispatch, useSelector } from "react-redux";
 
 import Spinner from "../../components/spinner/Spinner";
 
-import { loginUserByPassword } from "../../store/currentUser/currentUserSlice";
+import { loginUserByPassword } from "../../store/currentUserSlice";
 
 import {
   AuthContainer,

@@ -4,7 +4,6 @@ const User = db.user;
 const Profile = db.profile;
 
 exports.addProfile = async (req, res) => {
-  console.log(req.body);
   try {
     const newProfile = await Profile.create({
       name: req.body.name,
@@ -15,7 +14,7 @@ exports.addProfile = async (req, res) => {
 
     const user = await User.findOne({
       where: {
-        id: req.body.currentUserId,
+        id: req.body.userId,
       },
     });
 

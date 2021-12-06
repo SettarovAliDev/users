@@ -29,7 +29,7 @@ const Profiles = () => {
 
   const user = uniqueUser || currentUser;
 
-  console.log(user);
+  const isAdmin = user?.roles.find((role) => role.name === "admin");
 
   const onOpenEditClickHandler = () => {
     setIsEditOpen(true);
@@ -50,14 +50,17 @@ const Profiles = () => {
         <ProfilesInfo>
           <ProfilesDetail>{user.username}</ProfilesDetail>
           <ProfilesDetail>{user.email}</ProfilesDetail>
-          <ProfilesStatus>user</ProfilesStatus>
+          <ProfilesStatus>{isAdmin ? "admin" : "user"}</ProfilesStatus>
           <ProfilesActions>
             <EditSvgStyled />
             <DeleteSvgStyled />
           </ProfilesActions>
         </ProfilesInfo>
         <ProfilesHeading>Profiles:</ProfilesHeading>
-        <ProfileCards onOpenEditClickHandler={onOpenEditClickHandler} />
+        <ProfileCards
+          profiles={user.profiles}
+          onOpenEditClickHandler={onOpenEditClickHandler}
+        />
       </ContainerStyled>
     </Fragment>
   );

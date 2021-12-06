@@ -1,7 +1,8 @@
 import { useState } from "react";
 import { useDispatch } from "react-redux";
+import { useParams } from "react-router-dom";
 
-import { addProfile } from "../../store/currentUser/currentUserSlice";
+import { addProfile } from "../../store/currentUserSlice";
 
 import {
   EditProfileContainer,
@@ -17,6 +18,10 @@ const EditProfile = ({ onEditCloseHandler }) => {
   const [gender, setGender] = useState("");
   const [birthdate, setBirthdate] = useState("");
   const [city, setCity] = useState("");
+
+  const params = useParams();
+
+  const { userId } = params;
 
   const dispatch = useDispatch();
 
@@ -45,6 +50,7 @@ const EditProfile = ({ onEditCloseHandler }) => {
         gender,
         birthdate,
         city,
+        userId,
       })
     );
 
@@ -73,7 +79,7 @@ const EditProfile = ({ onEditCloseHandler }) => {
             required
             onChange={onChangeGenderHandler}
           />
-          <label for="gender-m">male</label>
+          <label htmlFor="gender-m">male</label>
           <input
             type="radio"
             id="gender-f"
@@ -82,7 +88,7 @@ const EditProfile = ({ onEditCloseHandler }) => {
             required
             onChange={onChangeGenderHandler}
           />
-          <label for="gender-f">female</label>
+          <label htmlFor="gender-f">female</label>
         </EditProfileRadio>
 
         <label htmlFor="birthdate">birthdate:</label>

@@ -2,7 +2,6 @@ const express = require("express");
 const cors = require("cors");
 const path = require("path");
 const bodyParser = require("body-parser");
-const pool = require("./db");
 
 require("dotenv").config();
 
@@ -42,72 +41,63 @@ if (process.env.NODE_ENV === "production") {
 
 // ROUTES
 require("./routes/auth.routes")(app);
+require("./routes/user.routes")(app);
 require("./routes/profile.routes")(app);
 
 // Create user
-app.post("/api/users", async (req, res) => {
-  try {
-    const { username, email, password, isAdmin } = req.body;
-    const isAdminBit = Number(isAdmin);
-    const newUser = await pool.query(
-      "INSERT INTO users (username, email, password, isAdmin) VALUES($1, $2, $3, $4) RETURNING *",
-      [username, email, password, isAdminBit]
-    );
-    res.json(newUser.rows[0]);
-  } catch (error) {
-    console.error(error.message);
-    res.json(error.message);
-  }
-});
-
-// Get all users
-app.get("/api/users", async (req, res) => {
-  try {
-    const allUsers = await pool.query("SELECT * FROM users");
-    res.json(allUsers.rows);
-  } catch (error) {
-    console.error(error.message);
-  }
-});
+// app.post("/api/users", async (req, res) => {
+//   try {
+//     const { username, email, password, isAdmin } = req.body;
+//     const isAdminBit = Number(isAdmin);
+//     const newUser = await pool.query(
+//       "INSERT INTO users (username, email, password, isAdmin) VALUES($1, $2, $3, $4) RETURNING *",
+//       [username, email, password, isAdminBit]
+//     );
+//     res.json(newUser.rows[0]);
+//   } catch (error) {
+//     console.error(error.message);
+//     res.json(error.message);
+//   }
+// });
 
 // Get user
-app.get("/api/users/:id", async (req, res) => {
-  try {
-    const { id } = req.params;
-    const user = await pool.query("SELECT * FROM users WHERE id = $1", [id]);
-    res.json(user.rows[0]);
-  } catch (error) {
-    console.error(error.message);
-  }
-});
+// app.get("/api/users/:id", async (req, res) => {
+//   try {
+//     const { id } = req.params;
+//     const user = await pool.query("SELECT * FROM users WHERE id = $1", [id]);
+//     res.json(user.rows[0]);
+//   } catch (error) {
+//     console.error(error.message);
+//   }
+// });
 
 // Update user
-app.put("/api/users/:id", async (req, res) => {
-  try {
-    const { id } = req.params;
-    const { username } = req.body;
-    const updateUser = await pool.query(
-      "UPDATE users SET username = $1 WHERE id = $2",
-      [username, id]
-    );
-    res.json(`User ${id} was updated`);
-  } catch (error) {
-    console.error(error.message);
-  }
-});
+// app.put("/api/users/:id", async (req, res) => {
+//   try {
+//     const { id } = req.params;
+//     const { username } = req.body;
+//     const updateUser = await pool.query(
+//       "UPDATE users SET username = $1 WHERE id = $2",
+//       [username, id]
+//     );
+//     res.json(`User ${id} was updated`);
+//   } catch (error) {
+//     console.error(error.message);
+//   }
+// });
 
 // Delete user
-app.delete("/api/users/:id", async (req, res) => {
-  try {
-    const { id } = req.params;
-    const deleteUser = await pool.query("DELETE FROM users WHERE id = $1", [
-      id,
-    ]);
-    res.json(`User ${id} was deleted`);
-  } catch (error) {
-    console.error(error.message);
-  }
-});
+// app.delete("/api/users/:id", async (req, res) => {
+//   try {
+//     const { id } = req.params;
+//     const deleteUser = await pool.query("DELETE FROM users WHERE id = $1", [
+//       id,
+//     ]);
+//     res.json(`User ${id} was deleted`);
+//   } catch (error) {
+//     console.error(error.message);
+//   }
+// });
 
 if (process.env.NODE_ENV === "production") {
   app.get("*", function (req, res) {

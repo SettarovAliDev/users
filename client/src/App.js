@@ -13,11 +13,14 @@ import Profiles from "./pages/profiles/Profiles";
 
 import { GlobalStyles } from "./GlobalStyles";
 
-import { loginUserByToken } from "./store/currentUser/currentUserSlice";
+import { loginUserByToken } from "./store/currentUserSlice";
 
 const App = () => {
   const dispatch = useDispatch();
   const currentUser = useSelector((state) => state.currentUser);
+  const isAdmin = currentUser?.user?.roles.find(
+    (role) => role.name === "admin"
+  );
 
   useEffect(() => {
     if (localStorage.getItem("token")) dispatch(loginUserByToken());
@@ -46,7 +49,7 @@ const App = () => {
 
           {currentUser.user && (
             <Route path="/" element={<EntireApp />}>
-              {currentUser?.user?.roles.includes("ROLE_ADMIN") && (
+              {isAdmin && (
                 <Fragment>
                   <Route path="dashboard" element={<Dashboard />} />
                   <Route path="users" element={<Users />} />

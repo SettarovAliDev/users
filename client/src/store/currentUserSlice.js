@@ -1,7 +1,7 @@
 import { createSlice, createAsyncThunk } from "@reduxjs/toolkit";
-import usersApi from "../../api/usersApi";
+import usersApi from "../api/usersApi";
 
-import { fetchUsers } from "../users/usersSlice";
+import { fetchUsers } from "./usersSlice";
 
 export const registerUser = createAsyncThunk(
   "currentUser/registerUser",
@@ -18,7 +18,7 @@ export const registerUser = createAsyncThunk(
       } else {
         localStorage.setItem("token", JSON.stringify(response.data.jwt));
         dispatch(loginCurrentUser(response.data.user));
-        if (response.data.user.roles.includes("ROLE_ADMIN")) {
+        if (response.data.user.roles.find((role) => role.name === "admin")) {
           dispatch(fetchUsers());
         }
       }
@@ -43,7 +43,7 @@ export const loginUserByPassword = createAsyncThunk(
 
       localStorage.setItem("token", JSON.stringify(response.data.jwt));
       dispatch(loginCurrentUser(response.data.user));
-      if (response.data.user.roles.includes("ROLE_ADMIN")) {
+      if (response.data.user.roles.find((role) => role.name === "admin")) {
         dispatch(fetchUsers());
       }
     } catch (error) {
@@ -56,7 +56,7 @@ export const loginUserByPassword = createAsyncThunk(
 
 export const loginUserByToken = createAsyncThunk(
   "currentUser/loginUserByToken",
-  async (user, { dispatch }) => {
+  async (_, { dispatch }) => {
     try {
       const token = JSON.parse(localStorage.getItem("token"));
       const response = await usersApi.get("api/auth/login", {
@@ -69,8 +69,7 @@ export const loginUserByToken = createAsyncThunk(
 
       localStorage.setItem("token", JSON.stringify(response.data.jwt));
       dispatch(loginCurrentUser(response.data.user));
-      console.log(response.data);
-      if (response.data.user.roles.includes("ROLE_ADMIN")) {
+      if (response.data.user.roles.find((role) => role.name === "admin")) {
         dispatch(fetchUsers());
       }
     } catch (error) {
@@ -82,18 +81,13 @@ export const loginUserByToken = createAsyncThunk(
 
 export const addProfile = createAsyncThunk(
   "currentUser/addProfile",
-  async (profile, { dispatch, getState }) => {
-    const response = await usersApi.post(
-      "api/profiles",
-      { ...profile, currentUserId: getState().currentUser.user.id },
-      {
-        headers: {
-          "Content-Type": "application/json",
-          Accept: "application/json",
-        },
-      }
-    );
-    console.log(response.data);
+  async (profile) => {
+    const response = await usersApi.post("api/profiles", profile, {
+      headers: {
+        "Content-Type": "application/json",
+        Accept: "application/json",
+      },
+    });
     return response.data;
   }
 );

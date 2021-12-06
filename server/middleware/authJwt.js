@@ -25,13 +25,7 @@ const verifyToken = (req, res, next) => {
       expiresIn: 86400, // 24 hours
     });
 
-    const authorities = [];
-
     const roles = await user.getRoles();
-
-    for (let i = 0; i < roles.length; i++) {
-      authorities.push("ROLE_" + roles[i].name.toUpperCase());
-    }
 
     const profiles = await user.getProfiles();
 
@@ -40,7 +34,7 @@ const verifyToken = (req, res, next) => {
         id: user.id,
         username: user.username,
         email: user.email,
-        roles: authorities,
+        roles,
         profiles,
       },
       jwt: token,

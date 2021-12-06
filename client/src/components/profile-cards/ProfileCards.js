@@ -1,17 +1,14 @@
-import { useSelector } from "react-redux";
-
 import ProfileCard from "../profile-card/ProfileCard";
 import ProfileCardNew from "../profile-card/ProfileCardNew";
 
 import { ProfileCardsStyled } from "./ProfileCardsStyles";
 
-const ProfileCards = ({ onOpenEditClickHandler }) => {
-  const profiles = useSelector((state) => state.currentUser.user.profiles);
-
+const ProfileCards = ({ onOpenEditClickHandler, profiles }) => {
   return (
     <ProfileCardsStyled>
       {profiles.map((profile) => (
         <ProfileCard
+          key={profile.id}
           profile={profile}
           onOpenEditClickHandler={onOpenEditClickHandler}
         />

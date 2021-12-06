@@ -57,13 +57,7 @@ exports.signin = async (req, res) => {
       expiresIn: 86400, // 24 hours
     });
 
-    const authorities = [];
-
     const roles = await user.getRoles();
-
-    for (let i = 0; i < roles.length; i++) {
-      authorities.push("ROLE_" + roles[i].name.toUpperCase());
-    }
 
     const profiles = await user.getProfiles();
 
@@ -72,7 +66,7 @@ exports.signin = async (req, res) => {
         id: user.id,
         username: user.username,
         email: user.email,
-        roles: authorities,
+        roles: roles,
         profiles,
       },
       jwt: token,

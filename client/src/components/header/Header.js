@@ -1,6 +1,6 @@
 import { Fragment } from "react";
 import { useDispatch, useSelector } from "react-redux";
-import { logoutCurrentUser } from "../../store/currentUser/currentUserSlice";
+import { logoutCurrentUser } from "../../store/currentUserSlice";
 
 import {
   HeaderContainer,
@@ -22,6 +22,7 @@ import users from "../../assets/users.svg";
 const Header = () => {
   const dispatch = useDispatch();
   const user = useSelector((state) => state.currentUser.user);
+  const isAdmin = user?.roles.find((role) => role.name === "admin");
 
   const onLogoutHandler = () => {
     localStorage.removeItem("token");
@@ -32,10 +33,7 @@ const Header = () => {
     <HeaderContainer>
       <HeaderContainerInner>
         <HeaderLeft>
-          <HeaderLogo
-            src={user?.roles.includes("ROLE_ADMIN") ? avatarAdmin : avatarUser}
-            alt="Avatar"
-          />
+          <HeaderLogo src={isAdmin ? avatarAdmin : avatarUser} alt="Avatar" />
           <HeaderUsername>{user?.username}</HeaderUsername>
         </HeaderLeft>
         <nav>
@@ -46,7 +44,7 @@ const Header = () => {
                 <img src={profiles} alt="Profiles" />
               </HeaderNavLink>
             </HeaderNavItem>
-            {user?.roles.includes("ROLE_ADMIN") && (
+            {isAdmin && (
               <Fragment>
                 <HeaderNavItem>
                   <HeaderNavLink to="/dashboard">

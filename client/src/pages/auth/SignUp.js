@@ -3,7 +3,7 @@ import { useDispatch, useSelector } from "react-redux";
 
 import Spinner from "../../components/spinner/Spinner";
 
-import { registerUser } from "../../store/currentUser/currentUserSlice";
+import { registerUser } from "../../store/currentUserSlice";
 
 import {
   AuthContainer,
