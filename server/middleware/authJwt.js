@@ -33,12 +33,15 @@ const verifyToken = (req, res, next) => {
       authorities.push("ROLE_" + roles[i].name.toUpperCase());
     }
 
+    const profiles = await user.getProfiles();
+
     req.user = {
       user: {
         id: user.id,
         username: user.username,
         email: user.email,
         roles: authorities,
+        profiles,
       },
       jwt: token,
     };

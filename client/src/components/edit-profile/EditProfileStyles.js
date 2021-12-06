@@ -1,17 +1,18 @@
 import styled from "styled-components";
-import { Link } from "react-router-dom";
+
+import { ReactComponent as CheckSvg } from "../../assets/check.svg";
+import { ReactComponent as CloseSvg } from "../../assets/close.svg";
 
 export const EditProfileContainer = styled.div`
   display: flex;
   flex-direction: column;
-  margin: 15rem auto;
 `;
 
 export const EditProfileForm = styled.form`
   display: flex;
   flex-direction: column;
-  width: 40rem;
-  margin: 13rem auto;
+  width: 25rem;
+  margin: 7rem 17rem;
 
   label {
     font-weight: 400;
@@ -38,48 +39,46 @@ export const EditProfileForm = styled.form`
   }
 
   button {
+    width: 10rem;
+    height: 3.8rem;
     align-self: center;
-    padding: 1rem 2.5rem;
-    margin-top: 6.5rem;
-    font-size: 2.4rem;
-    color: var(--text-color-dark-2);
-    letter-spacing: 0.75px;
     background-color: var(--button-color-grey);
     border: none;
-    border-radius: 1.2rem;
+    border-radius: 0.9rem;
     cursor: pointer;
   }
 `;
 
-export const EditProfileLink = styled(Link)`
-  align-self: center;
-  padding: 1rem 2.5rem;
-  margin-top: 3rem;
-  font-size: 1.4rem;
-  color: var(--text-color-dark-2);
-  letter-spacing: 0.75px;
-  background-color: var(--button-color-grey);
-  border: none;
-  border-radius: 1.2rem;
-  cursor: pointer;
-  text-decoration: none;
-`;
-
-export const EditProfileIsAdmin = styled.div`
+export const EditProfileRadio = styled.div`
   display: flex;
-  align-items: center;
-  justify-content: center;
-  margin-bottom: 2.5rem;
+  align-items: baseline;
+
+  & label {
+    margin-left: 1rem;
+    font-size: 2.4rem;
+    color: var(--text-color-dark-1);
+  }
+
+  & input:last-of-type {
+    margin-left: auto;
+  }
 `;
 
-export const Error = styled.div`
-  text-align: center;
-  padding: 1rem;
-  background-color: white;
-  color: #ff8499;
-  font-size: 2rem;
-  border-radius: 1.6rem;
-  margin-bottom: 2rem;
-  border: 1px solid #ff8499;
-  overflow: hidden;
+export const ButtonsContainer = styled.div`
+  display: flex;
+  justify-content: space-between;
+`;
+
+export const CheckSvgStyled = styled(CheckSvg)`
+  cursor: pointer;
+  width: 24px;
+  height: 24px;
+  stroke: #4e4b66;
+`;
+
+export const CloseSvgStyled = styled(CloseSvg)`
+  cursor: pointer;
+  width: 24px;
+  height: 24px;
+  stroke: #4e4b66;
 `;

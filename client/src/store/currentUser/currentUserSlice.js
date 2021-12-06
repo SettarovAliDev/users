@@ -4,7 +4,7 @@ import usersApi from "../../api/usersApi";
 import { fetchUsers } from "../users/usersSlice";
 
 export const registerUser = createAsyncThunk(
-  "users/registerUser",
+  "currentUser/registerUser",
   async (user, { dispatch }) => {
     try {
       const response = await usersApi.post("api/auth/signup", user, {
@@ -31,7 +31,7 @@ export const registerUser = createAsyncThunk(
 );
 
 export const loginUserByPassword = createAsyncThunk(
-  "users/loginUserByPassword",
+  "currentUser/loginUserByPassword",
   async (user, { dispatch }) => {
     try {
       const response = await usersApi.post("api/auth/signin", user, {
@@ -55,7 +55,7 @@ export const loginUserByPassword = createAsyncThunk(
 );
 
 export const loginUserByToken = createAsyncThunk(
-  "users/loginUserByToken",
+  "currentUser/loginUserByToken",
   async (user, { dispatch }) => {
     try {
       const token = JSON.parse(localStorage.getItem("token"));
@@ -69,6 +69,7 @@ export const loginUserByToken = createAsyncThunk(
 
       localStorage.setItem("token", JSON.stringify(response.data.jwt));
       dispatch(loginCurrentUser(response.data.user));
+      console.log(response.data);
       if (response.data.user.roles.includes("ROLE_ADMIN")) {
         dispatch(fetchUsers());
       }
@@ -76,6 +77,24 @@ export const loginUserByToken = createAsyncThunk(
       console.error(error.message);
       console.error(error.response.data.message);
     }
+  }
+);
+
+export const addProfile = createAsyncThunk(
+  "currentUser/addProfile",
+  async (profile, { dispatch, getState }) => {
+    const response = await usersApi.post(
+      "api/profiles",
+      { ...profile, currentUserId: getState().currentUser.user.id },
+      {
+        headers: {
+          "Content-Type": "application/json",
+          Accept: "application/json",
+        },
+      }
+    );
+    console.log(response.data);
+    return response.data;
   }
 );
 
@@ -130,6 +149,16 @@ const currentUserSlice = createSlice({
         state.status = "idle";
       })
       .addCase(loginUserByToken.rejected, (state, action) => {
+        state.status = "idle";
+      })
+      .addCase(addProfile.pending, (state, action) => {
+        state.status = "loading";
+      })
+      .addCase(addProfile.fulfilled, (state, action) => {
+        state.user.profiles = action.payload;
+        state.status = "idle";
+      })
+      .addCase(addProfile.rejected, (state, action) => {
         state.status = "idle";
       });
   },

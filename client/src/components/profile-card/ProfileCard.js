@@ -10,14 +10,16 @@ import {
   DeleteSvgStyled,
 } from "./ProfileCardStyles";
 
-const ProfileCard = () => {
+const ProfileCard = ({ profile }) => {
+  const { name, gender, birthdate, city } = profile;
+
   return (
     <ProfileCardStyled>
       <PforileCardInfo>
-        <ProfileCardName>Danylo Bilyi</ProfileCardName>
-        <ProfileCardDetail>male</ProfileCardDetail>
-        <ProfileCardDetail>25.03.2003</ProfileCardDetail>
-        <ProfileCardDetail>Kyiv</ProfileCardDetail>
+        <ProfileCardName>{name}</ProfileCardName>
+        <ProfileCardDetail>{gender}</ProfileCardDetail>
+        <ProfileCardDetail>{birthdate}</ProfileCardDetail>
+        <ProfileCardDetail>{city}</ProfileCardDetail>
       </PforileCardInfo>
       <ProfileCardActions>
         <ProfileCardEdit>

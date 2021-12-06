@@ -10,4 +10,6 @@ module.exports = function (app) {
   });
 
   app.post("/api/profiles", controller.addProfile);
+
+  app.get("/api/profiles/current", controller.getUserProfiles);
 };

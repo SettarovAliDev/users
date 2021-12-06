@@ -1,11 +1,18 @@
 import { useState } from "react";
 import { useDispatch } from "react-redux";
 
-import { addProfile } from "../../store/profiles/profilesSlice";
+import { addProfile } from "../../store/currentUser/currentUserSlice";
 
-import { EditProfileContainer, EditProfileForm } from "./EditProfileStyles";
+import {
+  EditProfileContainer,
+  EditProfileForm,
+  EditProfileRadio,
+  ButtonsContainer,
+  CheckSvgStyled,
+  CloseSvgStyled,
+} from "./EditProfileStyles";
 
-const EditProfile = () => {
+const EditProfile = ({ onEditCloseHandler }) => {
   const [name, setName] = useState("");
   const [gender, setGender] = useState("");
   const [birthdate, setBirthdate] = useState("");
@@ -40,6 +47,8 @@ const EditProfile = () => {
         city,
       })
     );
+
+    onEditCloseHandler();
   };
 
   return (
@@ -55,14 +64,27 @@ const EditProfile = () => {
           required
         />
         <label htmlFor="gender">gender:</label>
-        <input
-          value={gender}
-          onChange={onChangeGenderHandler}
-          id="gender"
-          type="text"
-          autoComplete="off"
-          required
-        />
+        <EditProfileRadio>
+          <input
+            type="radio"
+            id="gender-m"
+            name="gender"
+            value="male"
+            required
+            onChange={onChangeGenderHandler}
+          />
+          <label for="gender-m">male</label>
+          <input
+            type="radio"
+            id="gender-f"
+            name="gender"
+            value="female"
+            required
+            onChange={onChangeGenderHandler}
+          />
+          <label for="gender-f">female</label>
+        </EditProfileRadio>
+
         <label htmlFor="birthdate">birthdate:</label>
         <input
           value={birthdate}
@@ -81,9 +103,14 @@ const EditProfile = () => {
           autoComplete="off"
           required
         />
-        <button type="submit">
-          <span>Accept</span>
-        </button>
+        <ButtonsContainer>
+          <button type="submit">
+            <CheckSvgStyled />
+          </button>
+          <button type="button" onClick={onEditCloseHandler}>
+            <CloseSvgStyled />
+          </button>
+        </ButtonsContainer>
       </EditProfileForm>
     </EditProfileContainer>
   );

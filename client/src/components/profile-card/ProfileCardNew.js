@@ -6,9 +6,12 @@ import {
 
 import { ReactComponent as AddCard } from "../../assets/add-card.svg";
 
-const ProfileCardNew = () => {
+const ProfileCardNew = ({ onOpenEditClickHandler }) => {
   return (
-    <ProfileCardStyled style={{ position: "relative" }}>
+    <ProfileCardStyled
+      onClick={onOpenEditClickHandler}
+      style={{ position: "relative", cursor: "pointer" }}
+    >
       <AddCardContainer>
         <AddCard />
         <AddCardText>Crearte new profile</AddCardText>

@@ -64,12 +64,16 @@ exports.signin = async (req, res) => {
     for (let i = 0; i < roles.length; i++) {
       authorities.push("ROLE_" + roles[i].name.toUpperCase());
     }
+
+    const profiles = await user.getProfiles();
+
     res.status(200).send({
       user: {
         id: user.id,
         username: user.username,
         email: user.email,
         roles: authorities,
+        profiles,
       },
       jwt: token,
     });

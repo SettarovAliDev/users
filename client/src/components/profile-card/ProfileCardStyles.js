@@ -23,6 +23,10 @@ export const ProfileCardStyled = styled.li`
   overflow: hidden;
 
   &:hover {
+    background-color: #dfffdf;
+  }
+
+  &:hover {
     ${ProfileCardActions} {
       visibility: visible;
       opacity: 1;

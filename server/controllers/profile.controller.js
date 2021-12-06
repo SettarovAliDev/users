@@ -19,9 +19,27 @@ exports.addProfile = async (req, res) => {
       },
     });
 
-    await user.setProfiles(newProfile);
+    await user.addProfiles(newProfile);
 
-    res.status(200).send("Profile successfully added!!!!!!");
+    const profiles = await user.getProfiles();
+
+    res.status(200).send(profiles);
+  } catch (error) {
+    res.status(500).send({ message: error.message });
+  }
+};
+
+exports.getUserProfiles = async (req, res) => {
+  try {
+    const user = await User.findOne({
+      where: {
+        id: req.body.currentUserId,
+      },
+    });
+
+    const profiles = await user.getProfiles();
+
+    res.status(200).send({ profiles });
   } catch (error) {
     res.status(500).send({ message: error.message });
   }

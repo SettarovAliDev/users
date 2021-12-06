@@ -35,7 +35,7 @@ const Profiles = () => {
     setIsEditOpen(true);
   };
 
-  const onEditSubmitHandler = () => {
+  const onEditCloseHandler = () => {
     setIsEditOpen(false);
   };
 
@@ -43,7 +43,7 @@ const Profiles = () => {
     <Fragment>
       {isEditOpen && (
         <Modal>
-          <EditProfile />
+          <EditProfile onEditCloseHandler={onEditCloseHandler} />
         </Modal>
       )}
       <ContainerStyled>
@@ -52,12 +52,12 @@ const Profiles = () => {
           <ProfilesDetail>{user.email}</ProfilesDetail>
           <ProfilesStatus>user</ProfilesStatus>
           <ProfilesActions>
-            <EditSvgStyled onClick={onOpenEditClickHandler} />
+            <EditSvgStyled />
             <DeleteSvgStyled />
           </ProfilesActions>
         </ProfilesInfo>
         <ProfilesHeading>Profiles:</ProfilesHeading>
-        <ProfileCards />
+        <ProfileCards onOpenEditClickHandler={onOpenEditClickHandler} />
       </ContainerStyled>
     </Fragment>
   );
