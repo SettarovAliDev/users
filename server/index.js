@@ -60,17 +60,6 @@ require("./routes/profile.routes")(app);
 //   }
 // });
 
-// Get user
-// app.get("/api/users/:id", async (req, res) => {
-//   try {
-//     const { id } = req.params;
-//     const user = await pool.query("SELECT * FROM users WHERE id = $1", [id]);
-//     res.json(user.rows[0]);
-//   } catch (error) {
-//     console.error(error.message);
-//   }
-// });
-
 // Update user
 // app.put("/api/users/:id", async (req, res) => {
 //   try {
@@ -81,19 +70,6 @@ require("./routes/profile.routes")(app);
 //       [username, id]
 //     );
 //     res.json(`User ${id} was updated`);
-//   } catch (error) {
-//     console.error(error.message);
-//   }
-// });
-
-// Delete user
-// app.delete("/api/users/:id", async (req, res) => {
-//   try {
-//     const { id } = req.params;
-//     const deleteUser = await pool.query("DELETE FROM users WHERE id = $1", [
-//       id,
-//     ]);
-//     res.json(`User ${id} was deleted`);
 //   } catch (error) {
 //     console.error(error.message);
 //   }

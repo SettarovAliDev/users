@@ -1,10 +1,10 @@
-import { createSlice, createAsyncThunk } from "@reduxjs/toolkit";
+import { createSlice, createAsyncThunk, isAnyOf } from "@reduxjs/toolkit";
 import usersApi from "../api/usersApi";
 
-import { fetchUsers } from "./usersSlice";
+import { fetchUsers, fetchUser } from "./usersSlice";
 
 export const registerUser = createAsyncThunk(
-  "currentUser/registerUser",
+  "auth/registerUser",
   async (user, { dispatch }) => {
     try {
       const response = await usersApi.post("api/auth/signup", user, {
@@ -13,15 +13,13 @@ export const registerUser = createAsyncThunk(
           Accept: "application/json",
         },
       });
-      if (response.data.message) {
-        console.log(response.data.message);
-      } else {
-        localStorage.setItem("token", JSON.stringify(response.data.jwt));
-        dispatch(loginCurrentUser(response.data.user));
-        if (response.data.user.roles.find((role) => role.name === "admin")) {
-          dispatch(fetchUsers());
-        }
-      }
+
+      response.data.isAdmin
+        ? dispatch(fetchUsers())
+        : dispatch(fetchUser(response.data.userId));
+
+      localStorage.setItem("token", JSON.stringify(response.data.jwt));
+      return response.data;
     } catch (error) {
       console.error(error.message);
       console.error(error?.response?.data?.message);
@@ -31,7 +29,7 @@ export const registerUser = createAsyncThunk(
 );
 
 export const loginUserByPassword = createAsyncThunk(
-  "currentUser/loginUserByPassword",
+  "auth/loginUserByPassword",
   async (user, { dispatch }) => {
     try {
       const response = await usersApi.post("api/auth/signin", user, {
@@ -41,11 +39,13 @@ export const loginUserByPassword = createAsyncThunk(
         },
       });
 
+      response.data.isAdmin
+        ? dispatch(fetchUsers())
+        : dispatch(fetchUser(response.data.userId));
+
       localStorage.setItem("token", JSON.stringify(response.data.jwt));
-      dispatch(loginCurrentUser(response.data.user));
-      if (response.data.user.roles.find((role) => role.name === "admin")) {
-        dispatch(fetchUsers());
-      }
+
+      return response.data;
     } catch (error) {
       console.error(error.message);
       console.error(error?.response?.data?.message);
@@ -55,7 +55,7 @@ export const loginUserByPassword = createAsyncThunk(
 );
 
 export const loginUserByToken = createAsyncThunk(
-  "currentUser/loginUserByToken",
+  "auth/loginUserByToken",
   async (_, { dispatch }) => {
     try {
       const token = JSON.parse(localStorage.getItem("token"));
@@ -67,47 +67,39 @@ export const loginUserByToken = createAsyncThunk(
         },
       });
 
+      response.data.isAdmin
+        ? dispatch(fetchUsers())
+        : dispatch(fetchUser(response.data.userId));
+
       localStorage.setItem("token", JSON.stringify(response.data.jwt));
-      dispatch(loginCurrentUser(response.data.user));
-      if (response.data.user.roles.find((role) => role.name === "admin")) {
-        dispatch(fetchUsers());
-      }
+
+      return response.data;
     } catch (error) {
       console.error(error.message);
       console.error(error.response.data.message);
+      localStorage.removeItem("token");
     }
   }
 );
 
-export const addProfile = createAsyncThunk(
-  "currentUser/addProfile",
-  async (profile) => {
-    const response = await usersApi.post("api/profiles", profile, {
-      headers: {
-        "Content-Type": "application/json",
-        Accept: "application/json",
-      },
-    });
-    return response.data;
-  }
-);
-
-const currentUserSlice = createSlice({
-  name: "currentUser",
+const authSlice = createSlice({
+  name: "auth",
   initialState: {
-    user: null,
+    userId: null,
+    isAdmin: false,
+    usersLoaded: false,
     status: "idle",
     signUpError: null,
     signInError: null,
   },
   reducers: {
-    loginCurrentUser(state, action) {
-      state.user = action.payload;
-    },
     logoutCurrentUser(state, action) {
-      state.user = null;
+      state.userId = null;
+      state.isAdmin = false;
+      state.usersLoaded = false;
       state.signInError = null;
       state.signUpError = null;
+      state.status = "idle";
     },
     setSignUpError(state, action) {
       state.signUpError = action.payload;
@@ -122,7 +114,8 @@ const currentUserSlice = createSlice({
         state.status = "loading";
       })
       .addCase(registerUser.fulfilled, (state, action) => {
-        state.status = "idle";
+        state.userId = action.payload.userId;
+        state.isAdmin = action.payload.isAdmin;
       })
       .addCase(registerUser.rejected, (state, action) => {
         state.status = "idle";
@@ -131,7 +124,8 @@ const currentUserSlice = createSlice({
         state.status = "loading";
       })
       .addCase(loginUserByPassword.fulfilled, (state, action) => {
-        state.status = "idle";
+        state.userId = action.payload.userId;
+        state.isAdmin = action.payload.isAdmin;
       })
       .addCase(loginUserByPassword.rejected, (state, action) => {
         state.status = "idle";
@@ -140,28 +134,63 @@ const currentUserSlice = createSlice({
         state.status = "loading";
       })
       .addCase(loginUserByToken.fulfilled, (state, action) => {
-        state.status = "idle";
+        state.userId = action.payload.userId;
+        state.isAdmin = action.payload.isAdmin;
       })
       .addCase(loginUserByToken.rejected, (state, action) => {
         state.status = "idle";
       })
-      .addCase(addProfile.pending, (state, action) => {
-        state.status = "loading";
-      })
-      .addCase(addProfile.fulfilled, (state, action) => {
-        state.user.profiles = action.payload;
+      .addCase("users/fetchUsers/fulfilled", (state, action) => {
+        state.usersLoaded = true;
         state.status = "idle";
       })
-      .addCase(addProfile.rejected, (state, action) => {
+      .addCase("users/fetchUser/fulfilled", (state, action) => {
+        state.usersLoaded = true;
         state.status = "idle";
       });
+
+    // builder
+    //   .addMatcher(
+    //     isAnyOf("users/fetchUser/fulfilled", "users/fetchUsers/fulfilled"),
+    //     (state) => {
+    //       state.usersLoaded = true;
+    //       state.status = "idle";
+    //     }
+    //   )
+    //   .addMatcher(
+    //     isAnyOf(
+    //       registerUser.pending,
+    //       loginUserByPassword.pending,
+    //       loginUserByToken.pending
+    //     ),
+    //     (state) => {
+    //       state.status = "loading";
+    //     }
+    //   )
+    //   .addMatcher(
+    //     isAnyOf(
+    //       registerUser.fulfilled,
+    //       loginUserByPassword.fulfilled,
+    //       loginUserByToken.fulfilled
+    //     ),
+    //     (state, action) => {
+    //       state.userId = action.payload.userId;
+    //       state.isAdmin = action.payload.isAdmin;
+    //     }
+    //   )
+    //   .addMatcher(
+    //     isAnyOf(
+    //       registerUser.rejected,
+    //       loginUserByPassword.rejected,
+    //       loginUserByToken.rejected
+    //     ),
+    //     (state) => {
+    //       state.status = "idle";
+    //     }
+    //   );
   },
 });
 
-export const {
-  loginCurrentUser,
-  logoutCurrentUser,
-  setSignUpError,
-  setSignInError,
-} = currentUserSlice.actions;
-export default currentUserSlice.reducer;
+export const { logoutCurrentUser, setSignUpError, setSignInError } =
+  authSlice.actions;
+export default authSlice.reducer;

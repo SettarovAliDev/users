@@ -13,14 +13,11 @@ import Profiles from "./pages/profiles/Profiles";
 
 import { GlobalStyles } from "./GlobalStyles";
 
-import { loginUserByToken } from "./store/currentUserSlice";
+import { loginUserByToken } from "./store/authSlice";
 
 const App = () => {
   const dispatch = useDispatch();
-  const currentUser = useSelector((state) => state.currentUser);
-  const isAdmin = currentUser?.user?.roles.find(
-    (role) => role.name === "admin"
-  );
+  const { isAdmin, status, usersLoaded } = useSelector((state) => state.auth);
 
   useEffect(() => {
     if (localStorage.getItem("token")) dispatch(loginUserByToken());
@@ -29,25 +26,21 @@ const App = () => {
   return (
     <Fragment>
       <GlobalStyles />
-      {currentUser.status === "loading" ? (
+      {status === "loading" ? (
         <Spinner size="7rem" big />
       ) : (
         <Routes>
           <Route path="/" element={<Navigate to="sign-in" />} />
           <Route
             path="sign-in"
-            element={
-              currentUser.user ? <Navigate to="/profiles" /> : <SignIn />
-            }
+            element={usersLoaded ? <Navigate to="/profiles" /> : <SignIn />}
           />
           <Route
             path="sign-up"
-            element={
-              currentUser.user ? <Navigate to="/profiles" /> : <SignUp />
-            }
+            element={usersLoaded ? <Navigate to="/profiles" /> : <SignUp />}
           />
 
-          {currentUser.user && (
+          {usersLoaded && (
             <Route path="/" element={<EntireApp />}>
               {isAdmin && (
                 <Fragment>
@@ -59,7 +52,10 @@ const App = () => {
               <Route path="profiles" element={<Profiles />} />
             </Route>
           )}
-          <Route path="*" element={<PageNotFound />} />
+          <Route
+            path="*"
+            element={usersLoaded ? <PageNotFound /> : <Navigate to="sign-in" />}
+          />
         </Routes>
       )}
     </Fragment>

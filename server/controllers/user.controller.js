@@ -14,3 +14,20 @@ exports.fetchUsers = async (req, res) => {
     res.status(500).send({ message: error.message });
   }
 };
+
+exports.fetchUser = async (req, res) => {
+  try {
+    const { userId } = req.params;
+
+    const user = await User.findOne({
+      where: {
+        id: userId,
+      },
+      include: [Role, Profile],
+    });
+
+    res.status(200).send(user);
+  } catch (error) {
+    res.status(500).send({ message: error.message });
+  }
+};

@@ -1,8 +1,8 @@
 import { useState } from "react";
-import { useDispatch } from "react-redux";
+import { useDispatch, useSelector } from "react-redux";
 import { useParams } from "react-router-dom";
 
-import { addProfile } from "../../store/currentUserSlice";
+import { addProfile } from "../../store/usersSlice";
 
 import {
   EditProfileContainer,
@@ -19,11 +19,11 @@ const EditProfile = ({ onEditCloseHandler }) => {
   const [birthdate, setBirthdate] = useState("");
   const [city, setCity] = useState("");
 
-  const params = useParams();
-
-  const { userId } = params;
+  const { userId } = useParams();
 
   const dispatch = useDispatch();
+
+  const currentUserId = useSelector((state) => state.auth.userId);
 
   const onChangeNameHandler = (e) => {
     setName(e.target.value);
@@ -50,7 +50,7 @@ const EditProfile = ({ onEditCloseHandler }) => {
         gender,
         birthdate,
         city,
-        userId,
+        userId: userId || currentUserId,
       })
     );
 

@@ -18,6 +18,7 @@ export const ProfileCardStyled = styled.li`
   display: flex;
   flex-direction: column;
   min-width: 32rem;
+  min-height: 30rem;
   list-style: none;
   border-radius: 1.6rem;
   background-color: var(--background-color-white);

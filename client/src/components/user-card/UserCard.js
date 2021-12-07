@@ -13,7 +13,9 @@ const UserCard = ({ user }) => {
     <UserCardContainer onClick={() => navigate(`${user.id}`)}>
       <UserCardHeading>{user.username}</UserCardHeading>
       <UserCardSpan>{user.email}</UserCardSpan>
-      <UserCardSpan>3 profiles</UserCardSpan>
+      <UserCardSpan>
+        {Object.values(user.profiles).length} profiles
+      </UserCardSpan>
     </UserCardContainer>
   );
 };

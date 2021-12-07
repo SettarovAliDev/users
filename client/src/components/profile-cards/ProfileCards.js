@@ -6,7 +6,7 @@ import { ProfileCardsStyled } from "./ProfileCardsStyles";
 const ProfileCards = ({ onOpenEditClickHandler, profiles }) => {
   return (
     <ProfileCardsStyled>
-      {profiles.map((profile) => (
+      {Object.values(profiles).map((profile) => (
         <ProfileCard
           key={profile.id}
           profile={profile}

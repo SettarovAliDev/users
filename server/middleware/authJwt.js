@@ -22,22 +22,17 @@ const verifyToken = (req, res, next) => {
     const user = await User.findByPk(decoded.id);
 
     const token = jwt.sign({ id: user.id }, config.secret, {
-      expiresIn: 86400, // 24 hours
+      expiresIn: 2678400, // 1 month
     });
 
     const roles = await user.getRoles();
 
-    const profiles = await user.getProfiles();
+    const isAdmin = roles.find((role) => role.name === "admin");
 
     req.user = {
-      user: {
-        id: user.id,
-        username: user.username,
-        email: user.email,
-        roles,
-        profiles,
-      },
+      userId: user.id,
       jwt: token,
+      isAdmin: !!isAdmin,
     };
 
     next();
@@ -47,4 +42,5 @@ const verifyToken = (req, res, next) => {
 const authJwt = {
   verifyToken,
 };
+
 module.exports = authJwt;

@@ -1,3 +1,8 @@
+import { useDispatch, useSelector } from "react-redux";
+import { useParams } from "react-router-dom";
+
+import { deleteProfile } from "../../store/usersSlice";
+
 import {
   ProfileCardStyled,
   PforileCardInfo,
@@ -11,7 +16,16 @@ import {
 } from "./ProfileCardStyles";
 
 const ProfileCard = ({ profile }) => {
-  const { name, gender, birthdate, city } = profile;
+  const dispatch = useDispatch();
+  const { userId } = useParams();
+
+  const currentUserId = useSelector((state) => state.auth.userId);
+
+  const { id, name, gender, birthdate, city } = profile;
+
+  const onDeleteProfileHandler = () => {
+    dispatch(deleteProfile({ userId: userId || currentUserId, profileId: id }));
+  };
 
   return (
     <ProfileCardStyled>
@@ -26,7 +40,7 @@ const ProfileCard = ({ profile }) => {
           <div>Edit</div>
           <EditSvgStyled />
         </ProfileCardEdit>
-        <ProfileCardDelete>
+        <ProfileCardDelete onClick={onDeleteProfileHandler}>
           <div>Delete</div>
           <DeleteSvgStyled />
         </ProfileCardDelete>

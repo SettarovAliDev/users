@@ -3,7 +3,7 @@ import { useDispatch, useSelector } from "react-redux";
 
 import Spinner from "../../components/spinner/Spinner";
 
-import { registerUser } from "../../store/currentUserSlice";
+import { registerUser } from "../../store/authSlice";
 
 import {
   AuthContainer,
@@ -21,8 +21,7 @@ const SignUp = () => {
   const [isAdmin, setIsAdmin] = useState(false);
 
   const dispatch = useDispatch();
-  const error = useSelector((state) => state.currentUser.signUpError);
-  const status = useSelector((state) => state.currentUser.status);
+  const { signUpError: error, status } = useSelector((state) => state.auth);
 
   const onChangeUsernameHandler = (e) => {
     setUsername(e.target.value);

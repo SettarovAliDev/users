@@ -3,7 +3,7 @@ import { useDispatch, useSelector } from "react-redux";
 
 import Spinner from "../../components/spinner/Spinner";
 
-import { loginUserByPassword } from "../../store/currentUserSlice";
+import { loginUserByPassword } from "../../store/authSlice";
 
 import {
   AuthContainer,
@@ -18,8 +18,7 @@ const SignIn = () => {
   const [password, setPassword] = useState("");
 
   const dispatch = useDispatch();
-  const error = useSelector((state) => state.currentUser.signInError);
-  const status = useSelector((state) => state.currentUser.status);
+  const { signInError: error, status } = useSelector((state) => state.auth);
 
   const onChangeEmailHandler = (e) => {
     setEmail(e.target.value);

@@ -18,27 +18,33 @@ exports.addProfile = async (req, res) => {
       },
     });
 
-    await user.addProfiles(newProfile);
+    const profile = await user.addProfiles(newProfile);
 
-    const profiles = await user.getProfiles();
+    const addedProfile = await Profile.findOne({
+      where: {
+        id: profile[0].profileId,
+      },
+    });
 
-    res.status(200).send(profiles);
+    res.status(200).send(addedProfile);
   } catch (error) {
     res.status(500).send({ message: error.message });
   }
 };
 
-exports.getUserProfiles = async (req, res) => {
+exports.deleteProfile = async (req, res) => {
   try {
-    const user = await User.findOne({
+    const { profileId } = req.params;
+
+    const profile = await Profile.findOne({
       where: {
-        id: req.body.currentUserId,
+        id: profileId,
       },
     });
 
-    const profiles = await user.getProfiles();
+    await profile.destroy();
 
-    res.status(200).send({ profiles });
+    res.status(200).send(profileId);
   } catch (error) {
     res.status(500).send({ message: error.message });
   }

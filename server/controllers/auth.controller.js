@@ -23,6 +23,7 @@ exports.signup = async (req, res, next) => {
         },
       },
     });
+
     await newUser.setRoles(roles);
 
     next();
@@ -38,38 +39,37 @@ exports.signin = async (req, res) => {
         email: req.body.email,
       },
     });
+
     if (!user) {
       return res
         .status(404)
         .send({ message: `User ${req.body.email} not found` });
     }
+
     const passwordIsValid = bcrypt.compareSync(
       req.body.password,
       user.password
     );
+
     if (!passwordIsValid) {
       return res.status(401).send({
         accessToken: null,
         message: "Invalid password",
       });
     }
+
     const token = jwt.sign({ id: user.id }, config.secret, {
-      expiresIn: 86400, // 24 hours
+      expiresIn: 2678400, // 1 month
     });
 
     const roles = await user.getRoles();
 
-    const profiles = await user.getProfiles();
+    const isAdmin = roles.find((role) => role.name === "admin");
 
     res.status(200).send({
-      user: {
-        id: user.id,
-        username: user.username,
-        email: user.email,
-        roles: roles,
-        profiles,
-      },
+      userId: user.id,
       jwt: token,
+      isAdmin: !!isAdmin,
     });
   } catch (error) {
     res.status(500).send({ message: error.message });

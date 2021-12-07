@@ -1,6 +1,6 @@
 import { Fragment } from "react";
 import { useDispatch, useSelector } from "react-redux";
-import { logoutCurrentUser } from "../../store/currentUserSlice";
+import { logoutCurrentUser } from "../../store/authSlice";
 
 import {
   HeaderContainer,
@@ -21,8 +21,8 @@ import users from "../../assets/users.svg";
 
 const Header = () => {
   const dispatch = useDispatch();
-  const user = useSelector((state) => state.currentUser.user);
-  const isAdmin = user?.roles.find((role) => role.name === "admin");
+  const { userId, isAdmin } = useSelector((state) => state.auth);
+  const user = useSelector((state) => state.users.entities[userId]);
 
   const onLogoutHandler = () => {
     localStorage.removeItem("token");

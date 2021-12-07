@@ -9,7 +9,9 @@ module.exports = function (app) {
     next();
   });
 
+  // Create profile
   app.post("/api/profiles", controller.addProfile);
 
-  app.get("/api/profiles/current", controller.getUserProfiles);
+  // Delete profile
+  app.delete("/api/profiles/:profileId", controller.deleteProfile);
 };

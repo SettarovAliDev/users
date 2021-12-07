@@ -9,5 +9,9 @@ module.exports = function (app) {
     next();
   });
 
+  // Fetch users
   app.get("/api/users", controller.fetchUsers);
+
+  // Fetch user
+  app.get("/api/users/:userId", controller.fetchUser);
 };

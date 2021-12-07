@@ -20,12 +20,14 @@ import {
 const Profiles = () => {
   const [isEditOpen, setIsEditOpen] = useState(false);
 
-  const params = useParams();
+  const { userId } = useParams();
 
-  const { userId } = params;
+  const { userId: currentUserId } = useSelector((state) => state.auth);
 
-  const currentUser = useSelector((state) => state?.currentUser?.user);
   const uniqueUser = useSelector((state) => state?.users?.entities?.[userId]);
+  const currentUser = useSelector(
+    (state) => state?.users?.entities?.[currentUserId]
+  );
 
   const user = uniqueUser || currentUser;
 
