@@ -44,37 +44,6 @@ require("./routes/auth.routes")(app);
 require("./routes/user.routes")(app);
 require("./routes/profile.routes")(app);
 
-// Create user
-// app.post("/api/users", async (req, res) => {
-//   try {
-//     const { username, email, password, isAdmin } = req.body;
-//     const isAdminBit = Number(isAdmin);
-//     const newUser = await pool.query(
-//       "INSERT INTO users (username, email, password, isAdmin) VALUES($1, $2, $3, $4) RETURNING *",
-//       [username, email, password, isAdminBit]
-//     );
-//     res.json(newUser.rows[0]);
-//   } catch (error) {
-//     console.error(error.message);
-//     res.json(error.message);
-//   }
-// });
-
-// Update user
-// app.put("/api/users/:id", async (req, res) => {
-//   try {
-//     const { id } = req.params;
-//     const { username } = req.body;
-//     const updateUser = await pool.query(
-//       "UPDATE users SET username = $1 WHERE id = $2",
-//       [username, id]
-//     );
-//     res.json(`User ${id} was updated`);
-//   } catch (error) {
-//     console.error(error.message);
-//   }
-// });
-
 if (process.env.NODE_ENV === "production") {
   app.get("*", function (req, res) {
     res.sendFile(path.join(__dirname, "../client/build", "index.html"));

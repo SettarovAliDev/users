@@ -12,6 +12,9 @@ module.exports = function (app) {
   // Create profile
   app.post("/api/profiles", controller.addProfile);
 
+  // Edit profile
+  app.put("/api/profiles/:profileId", controller.editProfile);
+
   // Delete profile
   app.delete("/api/profiles/:profileId", controller.deleteProfile);
 };

@@ -27,6 +27,10 @@ export const HeaderContainerInner = styled.div`
 export const HeaderLeft = styled.div`
   display: flex;
   align-items: center;
+
+  &:hover {
+    cursor: pointer;
+  }
 `;
 
 export const HeaderNavList = styled.ul`

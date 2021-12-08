@@ -19,21 +19,7 @@ const verifyToken = (req, res, next) => {
       });
     }
 
-    const user = await User.findByPk(decoded.id);
-
-    const token = jwt.sign({ id: user.id }, config.secret, {
-      expiresIn: 2678400, // 1 month
-    });
-
-    const roles = await user.getRoles();
-
-    const isAdmin = roles.find((role) => role.name === "admin");
-
-    req.user = {
-      userId: user.id,
-      jwt: token,
-      isAdmin: !!isAdmin,
-    };
+    req.userId = decoded.id;
 
     next();
   });

@@ -1,20 +1,47 @@
+import { Fragment, useState } from "react";
+
+import Modal from "../modal/Modal";
+import EditProfile from "../edit-profile/EditProfile";
+
 import ProfileCard from "../profile-card/ProfileCard";
 import ProfileCardNew from "../profile-card/ProfileCardNew";
 
 import { ProfileCardsStyled } from "./ProfileCardsStyles";
 
-const ProfileCards = ({ onOpenEditClickHandler, profiles }) => {
+const ProfileCards = ({ profiles }) => {
+  const [isEditOpen, setIsEditOpen] = useState(false);
+  const [previousData, setPreviousData] = useState(null);
+
+  const onEditOpenHandler = (prev) => {
+    setIsEditOpen(true);
+    setPreviousData(prev);
+  };
+
+  const onEditCloseHandler = () => {
+    setIsEditOpen(false);
+  };
+
   return (
-    <ProfileCardsStyled>
-      {Object.values(profiles).map((profile) => (
-        <ProfileCard
-          key={profile.id}
-          profile={profile}
-          onOpenEditClickHandler={onOpenEditClickHandler}
-        />
-      ))}
-      <ProfileCardNew onOpenEditClickHandler={onOpenEditClickHandler} />
-    </ProfileCardsStyled>
+    <Fragment>
+      {isEditOpen && (
+        <Modal>
+          <EditProfile
+            onEditCloseHandler={onEditCloseHandler}
+            previousData={previousData}
+          />
+        </Modal>
+      )}
+      <ProfileCardsStyled>
+        {Object.values(profiles).map((profile) => (
+          <ProfileCard
+            key={profile.id}
+            profile={profile}
+            onEditOpenHandler={onEditOpenHandler}
+          />
+        ))}
+        <ProfileCardNew onEditOpenHandler={onEditOpenHandler} />
+      </ProfileCardsStyled>
+    </Fragment>
   );
 };
 

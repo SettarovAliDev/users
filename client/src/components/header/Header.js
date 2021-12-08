@@ -1,4 +1,5 @@
 import { Fragment } from "react";
+import { useNavigate } from "react-router-dom";
 import { useDispatch, useSelector } from "react-redux";
 import { logoutCurrentUser } from "../../store/authSlice";
 
@@ -20,6 +21,7 @@ import dashboard from "../../assets/dashboard.svg";
 import users from "../../assets/users.svg";
 
 const Header = () => {
+  const navigate = useNavigate();
   const dispatch = useDispatch();
   const { userId, isAdmin } = useSelector((state) => state.auth);
   const user = useSelector((state) => state.users.entities[userId]);
@@ -32,7 +34,7 @@ const Header = () => {
   return (
     <HeaderContainer>
       <HeaderContainerInner>
-        <HeaderLeft>
+        <HeaderLeft onClick={() => navigate("/")}>
           <HeaderLogo src={isAdmin ? avatarAdmin : avatarUser} alt="Avatar" />
           <HeaderUsername>{user?.username}</HeaderUsername>
         </HeaderLeft>

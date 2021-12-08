@@ -3,6 +3,7 @@ import { useDispatch, useSelector } from "react-redux";
 import { useParams } from "react-router-dom";
 
 import { addProfile } from "../../store/usersSlice";
+import { editProfile } from "../../store/usersSlice";
 
 import {
   EditProfileContainer,
@@ -13,11 +14,11 @@ import {
   CloseSvgStyled,
 } from "./EditProfileStyles";
 
-const EditProfile = ({ onEditCloseHandler }) => {
-  const [name, setName] = useState("");
-  const [gender, setGender] = useState("");
-  const [birthdate, setBirthdate] = useState("");
-  const [city, setCity] = useState("");
+const EditProfile = ({ onEditCloseHandler, previousData }) => {
+  const [name, setName] = useState(previousData?.name || "");
+  const [gender, setGender] = useState(previousData?.gender || "");
+  const [birthdate, setBirthdate] = useState(previousData?.birthdate || "");
+  const [city, setCity] = useState(previousData?.city || "");
 
   const { userId } = useParams();
 
@@ -44,15 +45,27 @@ const EditProfile = ({ onEditCloseHandler }) => {
   const onSubmitHandler = async (e) => {
     e.preventDefault();
 
-    dispatch(
-      addProfile({
-        name,
-        gender,
-        birthdate,
-        city,
-        userId: userId || currentUserId,
-      })
-    );
+    if (previousData) {
+      dispatch(
+        editProfile({
+          name,
+          gender,
+          birthdate,
+          city,
+          profileId: previousData.id,
+        })
+      );
+    } else {
+      dispatch(
+        addProfile({
+          name,
+          gender,
+          birthdate,
+          city,
+          userId: userId || currentUserId,
+        })
+      );
+    }
 
     onEditCloseHandler();
   };
@@ -76,8 +89,9 @@ const EditProfile = ({ onEditCloseHandler }) => {
             id="gender-m"
             name="gender"
             value="male"
-            required
+            checked={gender === "male"}
             onChange={onChangeGenderHandler}
+            required
           />
           <label htmlFor="gender-m">male</label>
           <input
@@ -85,8 +99,9 @@ const EditProfile = ({ onEditCloseHandler }) => {
             id="gender-f"
             name="gender"
             value="female"
-            required
+            checked={gender === "female"}
             onChange={onChangeGenderHandler}
+            required
           />
           <label htmlFor="gender-f">female</label>
         </EditProfileRadio>
@@ -96,7 +111,7 @@ const EditProfile = ({ onEditCloseHandler }) => {
           value={birthdate}
           onChange={onChangeBirthdateHandler}
           id="birthdate"
-          type="text"
+          type="date"
           autoComplete="off"
           required
         />

@@ -5,7 +5,7 @@ import { fetchUsers, fetchUser } from "./usersSlice";
 
 export const registerUser = createAsyncThunk(
   "auth/registerUser",
-  async (user, { dispatch }) => {
+  async (user, { dispatch, rejectWithValue }) => {
     try {
       const response = await usersApi.post("api/auth/signup", user, {
         headers: {
@@ -19,18 +19,18 @@ export const registerUser = createAsyncThunk(
         : dispatch(fetchUser(response.data.userId));
 
       localStorage.setItem("token", JSON.stringify(response.data.jwt));
+
       return response.data;
     } catch (error) {
       console.error(error.message);
-      console.error(error?.response?.data?.message);
-      dispatch(setSignUpError(error.response.data.message));
+      return rejectWithValue(error.response.data.message);
     }
   }
 );
 
 export const loginUserByPassword = createAsyncThunk(
   "auth/loginUserByPassword",
-  async (user, { dispatch }) => {
+  async (user, { dispatch, rejectWithValue }) => {
     try {
       const response = await usersApi.post("api/auth/signin", user, {
         headers: {
@@ -48,15 +48,14 @@ export const loginUserByPassword = createAsyncThunk(
       return response.data;
     } catch (error) {
       console.error(error.message);
-      console.error(error?.response?.data?.message);
-      dispatch(setSignInError(error.response.data.message));
+      return rejectWithValue(error.response.data.message);
     }
   }
 );
 
 export const loginUserByToken = createAsyncThunk(
   "auth/loginUserByToken",
-  async (_, { dispatch }) => {
+  async (_, { dispatch, rejectWithValue }) => {
     try {
       const token = JSON.parse(localStorage.getItem("token"));
       const response = await usersApi.get("api/auth/login", {
@@ -76,8 +75,8 @@ export const loginUserByToken = createAsyncThunk(
       return response.data;
     } catch (error) {
       console.error(error.message);
-      console.error(error.response.data.message);
       localStorage.removeItem("token");
+      return rejectWithValue(error.response.data.message);
     }
   }
 );
@@ -101,96 +100,54 @@ const authSlice = createSlice({
       state.signUpError = null;
       state.status = "idle";
     },
-    setSignUpError(state, action) {
-      state.signUpError = action.payload;
-    },
-    setSignInError(state, action) {
-      state.signInError = action.payload;
-    },
   },
   extraReducers: (builder) => {
-    builder
-      .addCase(registerUser.pending, (state, action) => {
-        state.status = "loading";
-      })
-      .addCase(registerUser.fulfilled, (state, action) => {
-        state.userId = action.payload.userId;
-        state.isAdmin = action.payload.isAdmin;
-      })
-      .addCase(registerUser.rejected, (state, action) => {
+    return builder
+      .addMatcher(
+        isAnyOf(
+          registerUser.pending,
+          loginUserByPassword.pending,
+          loginUserByToken.pending
+        ),
+        (state) => {
+          state.status = "loading";
+        }
+      )
+      .addMatcher(
+        isAnyOf(
+          registerUser.fulfilled,
+          loginUserByPassword.fulfilled,
+          loginUserByToken.fulfilled
+        ),
+        (state, action) => {
+          state.userId = action.payload.userId;
+          state.isAdmin = action.payload.isAdmin;
+          state.signInError = null;
+          state.signUpError = null;
+        }
+      )
+      .addMatcher(isAnyOf(registerUser.rejected), (state, action) => {
         state.status = "idle";
+        state.signUpError = action.payload;
+        state.signInError = null;
       })
-      .addCase(loginUserByPassword.pending, (state, action) => {
-        state.status = "loading";
-      })
-      .addCase(loginUserByPassword.fulfilled, (state, action) => {
-        state.userId = action.payload.userId;
-        state.isAdmin = action.payload.isAdmin;
-      })
-      .addCase(loginUserByPassword.rejected, (state, action) => {
-        state.status = "idle";
-      })
-      .addCase(loginUserByToken.pending, (state, action) => {
-        state.status = "loading";
-      })
-      .addCase(loginUserByToken.fulfilled, (state, action) => {
-        state.userId = action.payload.userId;
-        state.isAdmin = action.payload.isAdmin;
-      })
-      .addCase(loginUserByToken.rejected, (state, action) => {
-        state.status = "idle";
-      })
-      .addCase("users/fetchUsers/fulfilled", (state, action) => {
-        state.usersLoaded = true;
-        state.status = "idle";
-      })
-      .addCase("users/fetchUser/fulfilled", (state, action) => {
-        state.usersLoaded = true;
-        state.status = "idle";
-      });
-
-    // builder
-    //   .addMatcher(
-    //     isAnyOf("users/fetchUser/fulfilled", "users/fetchUsers/fulfilled"),
-    //     (state) => {
-    //       state.usersLoaded = true;
-    //       state.status = "idle";
-    //     }
-    //   )
-    //   .addMatcher(
-    //     isAnyOf(
-    //       registerUser.pending,
-    //       loginUserByPassword.pending,
-    //       loginUserByToken.pending
-    //     ),
-    //     (state) => {
-    //       state.status = "loading";
-    //     }
-    //   )
-    //   .addMatcher(
-    //     isAnyOf(
-    //       registerUser.fulfilled,
-    //       loginUserByPassword.fulfilled,
-    //       loginUserByToken.fulfilled
-    //     ),
-    //     (state, action) => {
-    //       state.userId = action.payload.userId;
-    //       state.isAdmin = action.payload.isAdmin;
-    //     }
-    //   )
-    //   .addMatcher(
-    //     isAnyOf(
-    //       registerUser.rejected,
-    //       loginUserByPassword.rejected,
-    //       loginUserByToken.rejected
-    //     ),
-    //     (state) => {
-    //       state.status = "idle";
-    //     }
-    //   );
+      .addMatcher(
+        isAnyOf(loginUserByPassword.rejected, loginUserByToken.rejected),
+        (state, action) => {
+          state.status = "idle";
+          state.signInError = action.payload;
+          state.signUpError = null;
+        }
+      )
+      .addMatcher(
+        isAnyOf(fetchUsers.fulfilled, fetchUser.fulfilled),
+        (state) => {
+          state.usersLoaded = true;
+          state.status = "idle";
+        }
+      );
   },
 });
 
-export const { logoutCurrentUser, setSignUpError, setSignInError } =
-  authSlice.actions;
+export const { logoutCurrentUser } = authSlice.actions;
 export default authSlice.reducer;

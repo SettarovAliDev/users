@@ -1,4 +1,4 @@
-import { createSlice, createAsyncThunk } from "@reduxjs/toolkit";
+import { createSlice, createAsyncThunk, isAnyOf } from "@reduxjs/toolkit";
 import usersApi from "../api/usersApi";
 
 export const fetchUsers = createAsyncThunk("users/fetchUsers", async () => {
@@ -12,7 +12,7 @@ export const fetchUser = createAsyncThunk("users/fetchUser", async (userId) => {
 });
 
 export const addProfile = createAsyncThunk(
-  "currentUser/addProfile",
+  "users/addProfile",
   async (profile) => {
     const response = await usersApi.post("api/profiles", profile, {
       headers: {
@@ -21,6 +21,29 @@ export const addProfile = createAsyncThunk(
       },
     });
     return { profile: response.data, userId: profile.userId };
+  }
+);
+
+export const editProfile = createAsyncThunk(
+  "users/editProfile",
+  async (profile, { rejectWithValue }) => {
+    try {
+      const response = await usersApi.put(
+        `api/profiles/${profile.profileId}`,
+        profile,
+        {
+          headers: {
+            "Content-Type": "application/json",
+            Accept: "application/json",
+          },
+        }
+      );
+
+      return response.data;
+    } catch (error) {
+      console.error(error.message);
+      return rejectWithValue(error.response.data.message);
+    }
   }
 );
 
@@ -34,8 +57,9 @@ export const deleteProfile = createAsyncThunk(
 );
 
 const initialState = {
-  status: "idle",
   entities: null,
+  status: "idle",
+  addProfileStatus: "idle",
 };
 
 const usersSlice = createSlice({
@@ -43,10 +67,7 @@ const usersSlice = createSlice({
   initialState,
   reducers: {},
   extraReducers: (builder) => {
-    builder
-      .addCase(fetchUsers.pending, (state, action) => {
-        state.status = "loading";
-      })
+    return builder
       .addCase(fetchUsers.fulfilled, (state, action) => {
         const normalizedUsers = {};
         action.payload.forEach((user) => {
@@ -62,12 +83,6 @@ const usersSlice = createSlice({
         state.entities = normalizedUsers;
         state.status = "idle";
       })
-      .addCase(fetchUsers.rejected, (state, action) => {
-        state.status = "idle";
-      })
-      .addCase(fetchUser.pending, (state, action) => {
-        state.status = "loading";
-      })
       .addCase(fetchUser.fulfilled, (state, action) => {
         const normalizedProfiles = {};
         action.payload.profiles.forEach((profile) => {
@@ -82,33 +97,35 @@ const usersSlice = createSlice({
         };
         state.status = "idle";
       })
-      .addCase(fetchUser.rejected, (state, action) => {
-        state.status = "idle";
-      })
-      .addCase(addProfile.pending, (state, action) => {
-        state.status = "loading";
-      })
       .addCase(addProfile.fulfilled, (state, action) => {
         const { userId, profile } = action.payload;
         state.entities[userId].profiles[profile.id] = profile;
-        state.status = "idle";
+        state.addProfileStatus = "idle";
       })
-      .addCase(addProfile.rejected, (state, action) => {
-        state.status = "idle";
-      })
-      .addCase(deleteProfile.pending, (state, action) => {
-        state.status = "loading";
+      .addCase(editProfile.fulfilled, (state, action) => {
+        const { userId, profile } = action.payload;
+        state.entities[userId].profiles[profile.id] = profile;
       })
       .addCase(deleteProfile.fulfilled, (state, action) => {
         const { userId, profileId } = action.payload;
-        state.status = "idle";
         delete state.entities[userId].profiles[profileId];
-      })
-      .addCase(deleteProfile.rejected, (state, action) => {
-        state.status = "idle";
       })
       .addCase("auth/logoutCurrentUser", (state, action) => {
         state.entities = null;
+      })
+      .addCase(addProfile.pending, (state) => {
+        state.addProfileStatus = "loading";
+      })
+      .addCase(editProfile.pending, (state) => {})
+      .addCase(addProfile.rejected, (state) => {
+        state.addProfileStatus = "idle";
+      })
+      .addCase(editProfile.rejected, (state) => {})
+      .addMatcher(isAnyOf(fetchUsers.pending, fetchUser.pending), (state) => {
+        state.status = "loading";
+      })
+      .addMatcher(isAnyOf(fetchUsers.rejected, fetchUser.rejected), (state) => {
+        state.status = "idle";
       });
   },
 });

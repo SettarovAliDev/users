@@ -15,6 +15,14 @@ export const UserCardContainer = styled.li`
     background-color: #dfffdf;
   }
 
+  & > * {
+    text-overflow: ellipsis;
+    white-space: nowrap;
+    overflow: hidden;
+    width: 100%;
+    text-align: center;
+  }
+
   & > *:not(:last-child) {
     margin-bottom: 2rem;
   }
@@ -39,7 +47,6 @@ export const UserCardHeading = styled.h3`
   font-size: 2.4rem;
   font-weight: 500;
   letter-spacing: 0.75px;
-  line-height: 1;
 `;
 
 export const UserCardSpan = styled.span`

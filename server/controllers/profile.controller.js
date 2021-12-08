@@ -32,6 +32,33 @@ exports.addProfile = async (req, res) => {
   }
 };
 
+exports.editProfile = async (req, res) => {
+  try {
+    const { profileId } = req.params;
+
+    const profile = await Profile.findOne({
+      where: {
+        id: profileId,
+      },
+    });
+
+    profile.set({
+      name: req.body.name,
+      gender: req.body.gender,
+      birthdate: req.body.birthdate,
+      city: req.body.city,
+    });
+
+    await profile.save();
+
+    const user = await profile.getUsers();
+
+    res.status(200).send({ profile, userId: user[0].id });
+  } catch (error) {
+    res.status(500).send({ message: error.message });
+  }
+};
+
 exports.deleteProfile = async (req, res) => {
   try {
     const { profileId } = req.params;

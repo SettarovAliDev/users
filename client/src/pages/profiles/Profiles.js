@@ -1,9 +1,6 @@
-import { Fragment, useState } from "react";
 import { useSelector } from "react-redux";
 import { useParams } from "react-router-dom";
 
-import Modal from "../../components/modal/Modal";
-import EditProfile from "../../components/edit-profile/EditProfile";
 import ProfileCards from "../../components/profile-cards/ProfileCards";
 
 import { ContainerStyled } from "../../GlobalStyles";
@@ -18,8 +15,6 @@ import {
 } from "./ProfilesStyles";
 
 const Profiles = () => {
-  const [isEditOpen, setIsEditOpen] = useState(false);
-
   const { userId } = useParams();
 
   const { userId: currentUserId } = useSelector((state) => state.auth);
@@ -33,38 +28,20 @@ const Profiles = () => {
 
   const isAdmin = user?.roles.find((role) => role.name === "admin");
 
-  const onOpenEditClickHandler = () => {
-    setIsEditOpen(true);
-  };
-
-  const onEditCloseHandler = () => {
-    setIsEditOpen(false);
-  };
-
   return (
-    <Fragment>
-      {isEditOpen && (
-        <Modal>
-          <EditProfile onEditCloseHandler={onEditCloseHandler} />
-        </Modal>
-      )}
-      <ContainerStyled>
-        <ProfilesInfo>
-          <ProfilesDetail>{user.username}</ProfilesDetail>
-          <ProfilesDetail>{user.email}</ProfilesDetail>
-          <ProfilesStatus>{isAdmin ? "admin" : "user"}</ProfilesStatus>
-          <ProfilesActions>
-            <EditSvgStyled />
-            <DeleteSvgStyled />
-          </ProfilesActions>
-        </ProfilesInfo>
-        <ProfilesHeading>Profiles:</ProfilesHeading>
-        <ProfileCards
-          profiles={user.profiles}
-          onOpenEditClickHandler={onOpenEditClickHandler}
-        />
-      </ContainerStyled>
-    </Fragment>
+    <ContainerStyled>
+      <ProfilesInfo>
+        <ProfilesDetail>{user.username}</ProfilesDetail>
+        <ProfilesDetail>{user.email}</ProfilesDetail>
+        <ProfilesStatus>{isAdmin ? "admin" : "user"}</ProfilesStatus>
+        <ProfilesActions>
+          <EditSvgStyled />
+          <DeleteSvgStyled />
+        </ProfilesActions>
+      </ProfilesInfo>
+      <ProfilesHeading>Profiles:</ProfilesHeading>
+      <ProfileCards profiles={user.profiles} />
+    </ContainerStyled>
   );
 };
 

@@ -14,4 +14,7 @@ module.exports = function (app) {
 
   // Fetch user
   app.get("/api/users/:userId", controller.fetchUser);
+
+  // Edit user
+  app.put("/api/users/:userId", controller.editUser);
 };
