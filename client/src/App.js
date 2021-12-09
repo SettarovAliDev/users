@@ -17,7 +17,7 @@ import { loginUserByToken } from "./store/authSlice";
 
 const App = () => {
   const dispatch = useDispatch();
-  const { isAdmin, status, usersLoaded } = useSelector((state) => state.auth);
+  const { isAdmin, loading, usersLoaded } = useSelector((state) => state.auth);
 
   useEffect(() => {
     if (localStorage.getItem("token")) dispatch(loginUserByToken());
@@ -26,7 +26,7 @@ const App = () => {
   return (
     <Fragment>
       <GlobalStyles />
-      {status === "loading" ? (
+      {loading ? (
         <Spinner size="7rem" big />
       ) : (
         <Routes>

@@ -1,3 +1,4 @@
+import { Fragment } from "react";
 import { useSelector } from "react-redux";
 
 import Spinner from "../spinner/Spinner";
@@ -11,7 +12,7 @@ import {
 import { ReactComponent as AddCard } from "../../assets/add-card.svg";
 
 const ProfileCardNew = ({ onEditOpenHandler }) => {
-  const addProfileStatus = useSelector((state) => state.users.addProfileStatus);
+  const { addProfileLoading } = useSelector((state) => state.users.loaders);
 
   return (
     <ProfileCardStyled
@@ -19,13 +20,13 @@ const ProfileCardNew = ({ onEditOpenHandler }) => {
       style={{ position: "relative", cursor: "pointer" }}
     >
       <AddCardContainer>
-        {addProfileStatus === "loading" ? (
+        {addProfileLoading ? (
           <Spinner size="10rem" />
         ) : (
-          <>
+          <Fragment>
             <AddCard />
             <AddCardText>Crearte new profile</AddCardText>
-          </>
+          </Fragment>
         )}
       </AddCardContainer>
     </ProfileCardStyled>

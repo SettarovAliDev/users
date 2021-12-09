@@ -1,8 +1,6 @@
 import { useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
 
-import Spinner from "../../components/spinner/Spinner";
-
 import { registerUser } from "../../store/authSlice";
 
 import {
@@ -21,7 +19,8 @@ const SignUp = () => {
   const [isAdmin, setIsAdmin] = useState(false);
 
   const dispatch = useDispatch();
-  const { signUpError: error, status } = useSelector((state) => state.auth);
+
+  const { signUpError } = useSelector((state) => state.auth.errors);
 
   const onChangeUsernameHandler = (e) => {
     setUsername(e.target.value);
@@ -61,7 +60,7 @@ const SignUp = () => {
     <AuthContainer>
       <AuthHeading>Create your account</AuthHeading>
       <AuthForm autocomplete="off" onSubmit={onSubmitHandler}>
-        {error && <Error>{error}</Error>}
+        {signUpError && <Error>{signUpError}</Error>}
         <label htmlFor="username">Username</label>
         <input
           value={username}
@@ -100,11 +99,7 @@ const SignUp = () => {
           <label htmlFor="is-admin">is admin</label>
         </AuthIsAdmin>
         <button type="submit">
-          {status === "loading" ? (
-            <Spinner size="3.5rem" />
-          ) : (
-            <span>Sign Up</span>
-          )}
+          <span>Sign Up</span>
         </button>
         <AuthLink to="/sign-in">Sign In</AuthLink>
       </AuthForm>

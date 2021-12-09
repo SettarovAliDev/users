@@ -19,6 +19,7 @@ export const ProfileCardStyled = styled.li`
   flex-direction: column;
   min-width: 32rem;
   min-height: 30rem;
+  width: 30rem;
   list-style: none;
   border-radius: 1.6rem;
   background-color: var(--background-color-white);
@@ -43,6 +44,14 @@ export const PforileCardInfo = styled.div`
   flex-direction: column;
   align-items: center;
   padding: 3.5rem 3.2rem;
+
+  & > * {
+    text-overflow: ellipsis;
+    white-space: nowrap;
+    overflow: hidden;
+    width: 100%;
+    text-align: center;
+  }
 `;
 
 export const ProfileCardName = styled.div`

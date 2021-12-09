@@ -1,8 +1,6 @@
 import { useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
 
-import Spinner from "../../components/spinner/Spinner";
-
 import { loginUserByPassword } from "../../store/authSlice";
 
 import {
@@ -18,7 +16,8 @@ const SignIn = () => {
   const [password, setPassword] = useState("");
 
   const dispatch = useDispatch();
-  const { signInError: error, status } = useSelector((state) => state.auth);
+
+  const { signInError } = useSelector((state) => state.auth.errors);
 
   const onChangeEmailHandler = (e) => {
     setEmail(e.target.value);
@@ -46,7 +45,7 @@ const SignIn = () => {
     <AuthContainer>
       <AuthHeading>Sign in</AuthHeading>
       <AuthForm onSubmit={onSubmitHandler}>
-        {error && <Error>{error}</Error>}
+        {signInError && <Error>{signInError}</Error>}
         <label htmlFor="email">Email</label>
         <input
           value={email}
@@ -64,11 +63,7 @@ const SignIn = () => {
           required
         />
         <button type="submit">
-          {status === "loading" ? (
-            <Spinner size="3.5rem" />
-          ) : (
-            <span>Sign In</span>
-          )}
+          <span>Sign In</span>
         </button>
         <AuthLink to="/sign-up">Sign Up</AuthLink>
       </AuthForm>

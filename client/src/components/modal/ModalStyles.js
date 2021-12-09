@@ -6,15 +6,15 @@ export const StyledBackdrop = styled.div`
   left: 0;
   width: 100%;
   height: 100%;
+  display: flex;
+  flex-flow: column nowrap;
+  justify-content: center;
+  align-items: center;
   z-index: 20;
   background-color: rgba(0, 0, 0, 0.75);
 `;
 
 export const StyledModal = styled.div`
-  position: fixed;
-  top: 20%;
-  left: 40%;
-  transform: translate(-50%, -50%);
   background-color: white;
   padding: 1rem;
   border-radius: 1.4rem;

@@ -4,7 +4,7 @@ import { Link } from "react-router-dom";
 export const AuthContainer = styled.div`
   display: flex;
   flex-direction: column;
-  margin: 15rem auto;
+  margin: 15rem auto 0;
 `;
 
 export const AuthHeading = styled.h2`

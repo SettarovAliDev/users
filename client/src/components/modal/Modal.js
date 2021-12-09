@@ -8,9 +8,10 @@ const portalElement = document.getElementById("overlays");
 const Modal = (props) => {
   return (
     <Fragment>
-      {ReactDOM.createPortal(<StyledBackdrop />, portalElement)}
       {ReactDOM.createPortal(
-        <StyledModal>{props.children}</StyledModal>,
+        <StyledBackdrop>
+          <StyledModal>{props.children}</StyledModal>
+        </StyledBackdrop>,
         portalElement
       )}
     </Fragment>

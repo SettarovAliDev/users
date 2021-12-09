@@ -1,7 +1,7 @@
 import { Fragment, useState } from "react";
 
 import Modal from "../modal/Modal";
-import EditProfile from "../edit-profile/EditProfile";
+import EditProfile from "../edit-form/EditProfile";
 
 import ProfileCard from "../profile-card/ProfileCard";
 import ProfileCardNew from "../profile-card/ProfileCardNew";

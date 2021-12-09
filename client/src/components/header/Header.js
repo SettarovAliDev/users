@@ -23,6 +23,7 @@ import users from "../../assets/users.svg";
 const Header = () => {
   const navigate = useNavigate();
   const dispatch = useDispatch();
+
   const { userId, isAdmin } = useSelector((state) => state.auth);
   const user = useSelector((state) => state.users.entities[userId]);
 

@@ -1,26 +1,81 @@
-import { createSlice, createAsyncThunk, isAnyOf } from "@reduxjs/toolkit";
+import { createSlice, createAsyncThunk } from "@reduxjs/toolkit";
 import usersApi from "../api/usersApi";
 
-export const fetchUsers = createAsyncThunk("users/fetchUsers", async () => {
-  const response = await usersApi.get("api/users");
-  return response.data;
-});
+import { logoutCurrentUser, loginUserByToken } from "./authSlice";
 
-export const fetchUser = createAsyncThunk("users/fetchUser", async (userId) => {
-  const response = await usersApi.get(`api/users/${userId}`);
-  return response.data;
-});
+export const fetchUsers = createAsyncThunk(
+  "users/fetchUsers",
+  async (_, { rejectWithValue }) => {
+    try {
+      const response = await usersApi.get("api/users");
+      return response.data;
+    } catch (error) {
+      console.error(error.message);
+      return rejectWithValue(error.response.data.message);
+    }
+  }
+);
+
+export const fetchUser = createAsyncThunk(
+  "users/fetchUser",
+  async (userId, { rejectWithValue }) => {
+    try {
+      const response = await usersApi.get(`api/users/${userId}`);
+      return response.data;
+    } catch (error) {
+      console.error(error.message);
+      return rejectWithValue(error.response.data.message);
+    }
+  }
+);
+
+export const editUser = createAsyncThunk(
+  "users/editUser",
+  async (user, { rejectWithValue, getState, dispatch }) => {
+    try {
+      const response = await usersApi.put(`api/users/${user.userId}`, user);
+      if (
+        response.data.id === getState().auth.userId &&
+        response.data.roles.length === 1
+      ) {
+        dispatch(loginUserByToken());
+      }
+      return response.data;
+    } catch (error) {
+      console.error(error.message);
+      return rejectWithValue(error.response.data.message);
+    }
+  }
+);
+
+export const deleteUser = createAsyncThunk(
+  "users/deleteUser",
+  async ({ userId, currentUserId }, { dispatch, rejectWithValue }) => {
+    try {
+      const response = await usersApi.delete(`api/users/${userId}`);
+      const isCurrentUser = response.data === currentUserId;
+      if (isCurrentUser) {
+        localStorage.removeItem("token");
+        dispatch(logoutCurrentUser());
+      }
+      return { userId: response.data, isCurrentUser };
+    } catch (error) {
+      console.error(error.message);
+      return rejectWithValue(error.response.data.message);
+    }
+  }
+);
 
 export const addProfile = createAsyncThunk(
   "users/addProfile",
-  async (profile) => {
-    const response = await usersApi.post("api/profiles", profile, {
-      headers: {
-        "Content-Type": "application/json",
-        Accept: "application/json",
-      },
-    });
-    return { profile: response.data, userId: profile.userId };
+  async (profile, { rejectWithValue }) => {
+    try {
+      const response = await usersApi.post("api/profiles", profile);
+      return { profile: response.data, userId: profile.userId };
+    } catch (error) {
+      console.error(error.message);
+      return rejectWithValue(error.response.data.message);
+    }
   }
 );
 
@@ -30,15 +85,8 @@ export const editProfile = createAsyncThunk(
     try {
       const response = await usersApi.put(
         `api/profiles/${profile.profileId}`,
-        profile,
-        {
-          headers: {
-            "Content-Type": "application/json",
-            Accept: "application/json",
-          },
-        }
+        profile
       );
-
       return response.data;
     } catch (error) {
       console.error(error.message);
@@ -49,25 +97,35 @@ export const editProfile = createAsyncThunk(
 
 export const deleteProfile = createAsyncThunk(
   "users/deleteProfile",
-  async ({ userId, profileId }) => {
-    const response = await usersApi.delete(`api/profiles/${profileId}`);
-    console.log(response);
-    return { userId, profileId: response.data };
+  async ({ userId, profileId }, { rejectWithValue }) => {
+    try {
+      const response = await usersApi.delete(`api/profiles/${profileId}`);
+      return { userId, profileId: response.data };
+    } catch (error) {
+      console.error(error.message);
+      return rejectWithValue(error.response.data.message);
+    }
   }
 );
 
-const initialState = {
-  entities: null,
-  status: "idle",
-  addProfileStatus: "idle",
-};
-
 const usersSlice = createSlice({
   name: "users",
-  initialState,
+  initialState: {
+    entities: null,
+    loaders: {
+      addProfileLoading: false,
+      editUserLoading: false,
+    },
+  },
   reducers: {},
   extraReducers: (builder) => {
     return builder
+      .addCase(editUser.pending, (state) => {
+        state.loaders.editUserLoading = true;
+      })
+      .addCase(addProfile.pending, (state) => {
+        state.loaders.addProfileLoading = true;
+      })
       .addCase(fetchUsers.fulfilled, (state, action) => {
         const normalizedUsers = {};
         action.payload.forEach((user) => {
@@ -81,7 +139,6 @@ const usersSlice = createSlice({
           };
         });
         state.entities = normalizedUsers;
-        state.status = "idle";
       })
       .addCase(fetchUser.fulfilled, (state, action) => {
         const normalizedProfiles = {};
@@ -95,12 +152,21 @@ const usersSlice = createSlice({
             profiles: normalizedProfiles,
           },
         };
-        state.status = "idle";
+      })
+      .addCase(editUser.fulfilled, (state, action) => {
+        console.log(action.payload);
+        const { id } = action.payload;
+        state.entities[id] = action.payload;
+        state.loaders.editUserLoading = false;
+      })
+      .addCase(deleteUser.fulfilled, (state, action) => {
+        const { userId, isCurrentUser } = action.payload;
+        if (!isCurrentUser) delete state.entities[userId];
       })
       .addCase(addProfile.fulfilled, (state, action) => {
         const { userId, profile } = action.payload;
         state.entities[userId].profiles[profile.id] = profile;
-        state.addProfileStatus = "idle";
+        state.loaders.addProfileLoading = false;
       })
       .addCase(editProfile.fulfilled, (state, action) => {
         const { userId, profile } = action.payload;
@@ -110,25 +176,13 @@ const usersSlice = createSlice({
         const { userId, profileId } = action.payload;
         delete state.entities[userId].profiles[profileId];
       })
+      .addCase(addProfile.rejected, (state) => {
+        state.loaders.addProfileLoading = false;
+      })
       .addCase("auth/logoutCurrentUser", (state, action) => {
         state.entities = null;
-      })
-      .addCase(addProfile.pending, (state) => {
-        state.addProfileStatus = "loading";
-      })
-      .addCase(editProfile.pending, (state) => {})
-      .addCase(addProfile.rejected, (state) => {
-        state.addProfileStatus = "idle";
-      })
-      .addCase(editProfile.rejected, (state) => {})
-      .addMatcher(isAnyOf(fetchUsers.pending, fetchUser.pending), (state) => {
-        state.status = "loading";
-      })
-      .addMatcher(isAnyOf(fetchUsers.rejected, fetchUser.rejected), (state) => {
-        state.status = "idle";
       });
   },
 });
 
-export const { addUser } = usersSlice.actions;
 export default usersSlice.reducer;

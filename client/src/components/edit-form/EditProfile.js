@@ -2,23 +2,28 @@ import { useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { useParams } from "react-router-dom";
 
+import TextField from "@mui/material/TextField";
+import AdapterDateFns from "@mui/lab/AdapterDateFns";
+import LocalizationProvider from "@mui/lab/LocalizationProvider";
+import DesktopDatePicker from "@mui/lab/DesktopDatePicker";
+
 import { addProfile } from "../../store/usersSlice";
 import { editProfile } from "../../store/usersSlice";
 
 import {
-  EditProfileContainer,
-  EditProfileForm,
-  EditProfileRadio,
+  EditContainer,
+  EditForm,
+  EditRadio,
   ButtonsContainer,
   CheckSvgStyled,
   CloseSvgStyled,
-} from "./EditProfileStyles";
+} from "./EditStyles";
 
 const EditProfile = ({ onEditCloseHandler, previousData }) => {
   const [name, setName] = useState(previousData?.name || "");
   const [gender, setGender] = useState(previousData?.gender || "");
-  const [birthdate, setBirthdate] = useState(previousData?.birthdate || "");
   const [city, setCity] = useState(previousData?.city || "");
+  const [birthdate, setBirthdate] = useState(previousData?.birthdate || "");
 
   const { userId } = useParams();
 
@@ -34,8 +39,8 @@ const EditProfile = ({ onEditCloseHandler, previousData }) => {
     setGender(e.target.value);
   };
 
-  const onChangeBirthdateHandler = (e) => {
-    setBirthdate(e.target.value);
+  const onChangeBirthdateHandler = (newValue) => {
+    setBirthdate(newValue);
   };
 
   const onChangeCityHandler = (e) => {
@@ -71,8 +76,8 @@ const EditProfile = ({ onEditCloseHandler, previousData }) => {
   };
 
   return (
-    <EditProfileContainer>
-      <EditProfileForm autocomplete="off" onSubmit={onSubmitHandler}>
+    <EditContainer>
+      <EditForm autocomplete="off" onSubmit={onSubmitHandler}>
         <label htmlFor="name">name:</label>
         <input
           value={name}
@@ -83,7 +88,7 @@ const EditProfile = ({ onEditCloseHandler, previousData }) => {
           required
         />
         <label htmlFor="gender">gender:</label>
-        <EditProfileRadio>
+        <EditRadio>
           <input
             type="radio"
             id="gender-m"
@@ -104,17 +109,18 @@ const EditProfile = ({ onEditCloseHandler, previousData }) => {
             required
           />
           <label htmlFor="gender-f">female</label>
-        </EditProfileRadio>
+        </EditRadio>
 
-        <label htmlFor="birthdate">birthdate:</label>
-        <input
-          value={birthdate}
-          onChange={onChangeBirthdateHandler}
-          id="birthdate"
-          type="date"
-          autoComplete="off"
-          required
-        />
+        <LocalizationProvider dateAdapter={AdapterDateFns}>
+          <DesktopDatePicker
+            label="birthdate:"
+            inputFormat="dd/MM/yyyy"
+            value={birthdate}
+            onChange={onChangeBirthdateHandler}
+            maxDate={new Date()}
+            renderInput={(params) => <TextField {...params} fontSize={50} />}
+          />
+        </LocalizationProvider>
         <label htmlFor="city">city:</label>
         <input
           value={city}
@@ -132,8 +138,8 @@ const EditProfile = ({ onEditCloseHandler, previousData }) => {
             <CloseSvgStyled />
           </button>
         </ButtonsContainer>
-      </EditProfileForm>
-    </EditProfileContainer>
+      </EditForm>
+    </EditContainer>
   );
 };
 

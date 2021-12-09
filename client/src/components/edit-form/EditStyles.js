@@ -3,18 +3,31 @@ import styled from "styled-components";
 import { ReactComponent as CheckSvg } from "../../assets/check.svg";
 import { ReactComponent as CloseSvg } from "../../assets/close.svg";
 
-export const EditProfileContainer = styled.div`
+export const EditContainer = styled.div`
   display: flex;
   flex-direction: column;
 `;
 
-export const EditProfileForm = styled.form`
+export const EditForm = styled.form`
   display: flex;
   flex-direction: column;
   width: 25rem;
   margin: 7rem 17rem;
 
-  label {
+  .MuiFormControl-root {
+    margin: 2rem 0;
+  }
+
+  .MuiOutlinedInput-input {
+    font-size: 2rem;
+  }
+
+  .MuiSvgIcon-root {
+    width: 3rem;
+    height: 3rem;
+  }
+
+  & > label {
     font-weight: 400;
     font-size: 1.8rem;
     line-height: 1.7;
@@ -22,7 +35,7 @@ export const EditProfileForm = styled.form`
     color: var(--text-color-light-1);
   }
 
-  input {
+  & > input {
     font-size: 2.4rem;
     border: none;
     outline: none;
@@ -38,7 +51,7 @@ export const EditProfileForm = styled.form`
     }
   }
 
-  button {
+  button:not(.MuiButtonBase-root) {
     width: 10rem;
     height: 3.8rem;
     align-self: center;
@@ -49,7 +62,7 @@ export const EditProfileForm = styled.form`
   }
 `;
 
-export const EditProfileRadio = styled.div`
+export const EditRadio = styled.div`
   display: flex;
   align-items: baseline;
 
@@ -67,6 +80,7 @@ export const EditProfileRadio = styled.div`
 export const ButtonsContainer = styled.div`
   display: flex;
   justify-content: space-between;
+  margin-top: 3rem;
 `;
 
 export const CheckSvgStyled = styled(CheckSvg)`

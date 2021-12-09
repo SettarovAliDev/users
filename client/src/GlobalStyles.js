@@ -31,7 +31,7 @@ export const GlobalStyles = createGlobalStyle`
   }
 `;
 
-export const ContainerStyled = styled.div`
+export const ContainerStyled = styled.main`
   max-width: 168rem;
   margin: 8rem auto;
 

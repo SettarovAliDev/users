@@ -17,4 +17,7 @@ module.exports = function (app) {
 
   // Edit user
   app.put("/api/users/:userId", controller.editUser);
+
+  // Edit user
+  app.delete("/api/users/:userId", controller.deleteUser);
 };

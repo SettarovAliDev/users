@@ -3,11 +3,11 @@ import usersApi from "../api/usersApi";
 
 import { fetchUsers, fetchUser } from "./usersSlice";
 
-export const registerUser = createAsyncThunk(
-  "auth/registerUser",
+const authCallback =
+  (route) =>
   async (user, { dispatch, rejectWithValue }) => {
     try {
-      const response = await usersApi.post("api/auth/signup", user, {
+      const response = await usersApi.post(`api/auth/${route}`, user, {
         headers: {
           "Content-Type": "application/json",
           Accept: "application/json",
@@ -25,32 +25,16 @@ export const registerUser = createAsyncThunk(
       console.error(error.message);
       return rejectWithValue(error.response.data.message);
     }
-  }
+  };
+
+export const registerUser = createAsyncThunk(
+  "auth/registerUser",
+  authCallback("signup")
 );
 
 export const loginUserByPassword = createAsyncThunk(
   "auth/loginUserByPassword",
-  async (user, { dispatch, rejectWithValue }) => {
-    try {
-      const response = await usersApi.post("api/auth/signin", user, {
-        headers: {
-          "Content-Type": "application/json",
-          Accept: "application/json",
-        },
-      });
-
-      response.data.isAdmin
-        ? dispatch(fetchUsers())
-        : dispatch(fetchUser(response.data.userId));
-
-      localStorage.setItem("token", JSON.stringify(response.data.jwt));
-
-      return response.data;
-    } catch (error) {
-      console.error(error.message);
-      return rejectWithValue(error.response.data.message);
-    }
-  }
+  authCallback("signin")
 );
 
 export const loginUserByToken = createAsyncThunk(
@@ -87,18 +71,20 @@ const authSlice = createSlice({
     userId: null,
     isAdmin: false,
     usersLoaded: false,
-    status: "idle",
-    signUpError: null,
-    signInError: null,
+    loading: false,
+    errors: {
+      signUpError: null,
+      signInError: null,
+    },
   },
   reducers: {
     logoutCurrentUser(state, action) {
       state.userId = null;
       state.isAdmin = false;
       state.usersLoaded = false;
-      state.signInError = null;
-      state.signUpError = null;
-      state.status = "idle";
+      state.loading = false;
+      state.errors.signInError = null;
+      state.errors.signUpError = null;
     },
   },
   extraReducers: (builder) => {
@@ -110,7 +96,7 @@ const authSlice = createSlice({
           loginUserByToken.pending
         ),
         (state) => {
-          state.status = "loading";
+          state.loading = true;
         }
       )
       .addMatcher(
@@ -122,28 +108,28 @@ const authSlice = createSlice({
         (state, action) => {
           state.userId = action.payload.userId;
           state.isAdmin = action.payload.isAdmin;
-          state.signInError = null;
-          state.signUpError = null;
+          state.errors.signInError = null;
+          state.errors.signUpError = null;
         }
       )
       .addMatcher(isAnyOf(registerUser.rejected), (state, action) => {
-        state.status = "idle";
-        state.signUpError = action.payload;
-        state.signInError = null;
+        state.loading = false;
+        state.errors.signUpError = action.payload;
+        state.errors.signInError = null;
       })
       .addMatcher(
         isAnyOf(loginUserByPassword.rejected, loginUserByToken.rejected),
         (state, action) => {
-          state.status = "idle";
-          state.signInError = action.payload;
-          state.signUpError = null;
+          state.loading = false;
+          state.errors.signInError = action.payload;
+          state.errors.signUpError = null;
         }
       )
       .addMatcher(
         isAnyOf(fetchUsers.fulfilled, fetchUser.fulfilled),
         (state) => {
           state.usersLoaded = true;
-          state.status = "idle";
+          state.loading = false;
         }
       );
   },

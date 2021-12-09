@@ -9,13 +9,28 @@ import {
   DashboardCardQuantity,
 } from "./DashboardStyles";
 
+function calculateAge(dateString) {
+  var today = new Date();
+  var birthDate = new Date(dateString);
+  var age = today.getFullYear() - birthDate.getFullYear();
+  var m = today.getMonth() - birthDate.getMonth();
+  if (m < 0 || (m === 0 && today.getDate() < birthDate.getDate())) {
+    age--;
+  }
+  return age;
+}
+
 const Dashboard = () => {
   const users = useSelector((state) => state.users.entities);
 
-  const usersQuantity = Object.values(users).length;
-  const profilesQuantity = Object.values(users)
+  const usersValues = Object.values(users);
+  const usersQuantity = usersValues.length;
+  const profilesQuantity = usersValues
     .map((user) => Object.values(user.profiles).length)
     .reduce((a, b) => a + b);
+  const profilesOver18 = usersValues
+    .flatMap((user) => Object.values(user.profiles))
+    .filter((profile) => calculateAge(Date.parse(profile.birthdate)) >= 18);
 
   return (
     <ContainerStyled>
@@ -33,7 +48,7 @@ const Dashboard = () => {
           <DashboardCardHeading>
             Profiles over 18 years old:
           </DashboardCardHeading>
-          <DashboardCardQuantity>FIX THIS</DashboardCardQuantity>
+          <DashboardCardQuantity>{profilesOver18.length}</DashboardCardQuantity>
         </DashboardCard>
       </DashboardCards>
     </ContainerStyled>
