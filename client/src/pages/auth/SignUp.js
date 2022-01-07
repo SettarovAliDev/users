@@ -1,7 +1,7 @@
-import { useState } from "react";
-import { useDispatch, useSelector } from "react-redux";
+import { useState } from 'react';
+import { useDispatch, useSelector } from 'react-redux';
 
-import { registerUser } from "../../store/authSlice";
+import { registerUser } from '../../store/authSlice';
 
 import {
   AuthContainer,
@@ -10,12 +10,12 @@ import {
   AuthIsAdmin,
   AuthLink,
   Error,
-} from "./AuthStyles";
+} from './AuthStyles';
 
 const SignUp = () => {
-  const [username, setUsername] = useState("");
-  const [email, setEmail] = useState("");
-  const [password, setPassword] = useState("");
+  const [username, setUsername] = useState('');
+  const [email, setEmail] = useState('');
+  const [password, setPassword] = useState('');
   const [isAdmin, setIsAdmin] = useState(false);
 
   const dispatch = useDispatch();
@@ -46,13 +46,13 @@ const SignUp = () => {
         username,
         email,
         password,
-        roles: isAdmin ? ["user", "admin"] : ["user"],
+        roles: isAdmin ? ['user', 'admin'] : ['user'],
       })
     );
 
-    setUsername("");
-    setEmail("");
-    setPassword("");
+    setUsername('');
+    setEmail('');
+    setPassword('');
     setIsAdmin(false);
   };
 

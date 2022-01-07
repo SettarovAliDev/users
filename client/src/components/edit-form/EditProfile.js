@@ -85,6 +85,7 @@ const EditProfile = ({ onEditCloseHandler, previousData }) => {
         <label htmlFor="gender">gender:</label>
         <EditRadio>
           <input
+            data-testid="gender-m"
             type="radio"
             id="gender-m"
             name="gender"
@@ -95,6 +96,7 @@ const EditProfile = ({ onEditCloseHandler, previousData }) => {
           />
           <label htmlFor="gender-m">male</label>
           <input
+            data-testid="gender-f"
             type="radio"
             id="gender-f"
             name="gender"
@@ -126,7 +128,7 @@ const EditProfile = ({ onEditCloseHandler, previousData }) => {
           required
         />
         <ButtonsContainer>
-          <button type="submit">
+          <button data-testid="add-profile" type="submit">
             <CheckSvgStyled />
           </button>
           <button type="button" onClick={onEditCloseHandler}>

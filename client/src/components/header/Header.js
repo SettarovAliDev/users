@@ -1,7 +1,7 @@
-import { Fragment } from "react";
-import { useNavigate } from "react-router-dom";
-import { useDispatch, useSelector } from "react-redux";
-import { logoutCurrentUser } from "../../store/authSlice";
+import { Fragment } from 'react';
+import { useNavigate } from 'react-router-dom';
+import { useDispatch, useSelector } from 'react-redux';
+import { logoutCurrentUser } from '../../store/authSlice';
 
 import {
   HeaderContainer,
@@ -12,13 +12,13 @@ import {
   HeaderLogo,
   HeaderUsername,
   HeaderNavLink,
-} from "./HeaderStyles";
+} from './HeaderStyles';
 
-import avatarAdmin from "../../assets/avatar-admin.png";
-import avatarUser from "../../assets/avatar-user.png";
-import profiles from "../../assets/profiles.svg";
-import dashboard from "../../assets/dashboard.svg";
-import users from "../../assets/users.svg";
+import avatarAdmin from '../../assets/avatar-admin.png';
+import avatarUser from '../../assets/avatar-user.png';
+import profiles from '../../assets/profiles.svg';
+import dashboard from '../../assets/dashboard.svg';
+import users from '../../assets/users.svg';
 
 const Header = () => {
   const navigate = useNavigate();
@@ -28,14 +28,14 @@ const Header = () => {
   const user = useSelector((state) => state.users.entities[userId]);
 
   const onLogoutHandler = () => {
-    localStorage.removeItem("token");
+    localStorage.removeItem('token');
     dispatch(logoutCurrentUser());
   };
 
   return (
     <HeaderContainer>
       <HeaderContainerInner>
-        <HeaderLeft onClick={() => navigate("/")}>
+        <HeaderLeft data-testid="home" onClick={() => navigate('/')}>
           <HeaderLogo src={isAdmin ? avatarAdmin : avatarUser} alt="Avatar" />
           <HeaderUsername>{user?.username}</HeaderUsername>
         </HeaderLeft>
@@ -64,7 +64,11 @@ const Header = () => {
               </Fragment>
             )}
             <HeaderNavItem>
-              <HeaderNavLink to="/sign-in" onClick={onLogoutHandler}>
+              <HeaderNavLink
+                data-testid="logout"
+                to="/sign-in"
+                onClick={onLogoutHandler}
+              >
                 Log out
               </HeaderNavLink>
             </HeaderNavItem>

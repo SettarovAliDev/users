@@ -1,10 +1,10 @@
-import { Fragment, useState } from "react";
-import { useDispatch, useSelector } from "react-redux";
-import { useParams } from "react-router-dom";
+import { Fragment, useState } from 'react';
+import { useDispatch, useSelector } from 'react-redux';
+import { useParams } from 'react-router-dom';
 
-import Spinner from "../spinner/Spinner";
+import Spinner from '../spinner/Spinner';
 
-import { deleteProfile } from "../../store/usersSlice";
+import { deleteProfile } from '../../store/usersSlice';
 
 import {
   ProfileCardStyled,
@@ -16,7 +16,7 @@ import {
   ProfileCardDelete,
   EditSvgStyled,
   DeleteSvgStyled,
-} from "./ProfileCardStyles";
+} from './ProfileCardStyles';
 
 const ProfileCard = ({ profile, onEditOpenHandler }) => {
   const [isLoading, setIsLoading] = useState(false);
@@ -61,11 +61,17 @@ const ProfileCard = ({ profile, onEditOpenHandler }) => {
             <ProfileCardDetail>{city}</ProfileCardDetail>
           </PforileCardInfo>
           <ProfileCardActions>
-            <ProfileCardEdit onClick={onEditClickHandler}>
+            <ProfileCardEdit
+              data-testid="edit-profile"
+              onClick={onEditClickHandler}
+            >
               <div>Edit</div>
               <EditSvgStyled />
             </ProfileCardEdit>
-            <ProfileCardDelete onClick={onDeleteProfileHandler}>
+            <ProfileCardDelete
+              data-testid="delete-profile"
+              onClick={onDeleteProfileHandler}
+            >
               <div>Delete</div>
               <DeleteSvgStyled />
             </ProfileCardDelete>

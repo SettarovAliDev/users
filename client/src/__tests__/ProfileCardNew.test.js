@@ -28,6 +28,6 @@ it('should render ProfileCardNew with spinner', () => {
 
 it('should call onEditOpenHandler on click', () => {
   rtlRender(<ProfileCardNew onEditOpenHandler={mockedOnEditOpenHandler} />);
-  fireEvent.click(screen.getByTestId('card'));
+  fireEvent.click(screen.getByTestId('add-profile-card'));
   expect(mockedOnEditOpenHandler).toHaveBeenCalled();
 });

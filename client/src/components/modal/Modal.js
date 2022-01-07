@@ -3,7 +3,10 @@ import ReactDOM from 'react-dom';
 
 import { StyledBackdrop, StyledModal } from './ModalStyles';
 
-const portalElement = document.getElementById('overlays');
+let modalRoot;
+modalRoot = document.createElement('div');
+modalRoot.setAttribute('id', 'overlays');
+document.body.appendChild(modalRoot);
 
 const Modal = (props) => {
   return (
@@ -12,7 +15,7 @@ const Modal = (props) => {
         <StyledBackdrop>
           <StyledModal>{props.children}</StyledModal>
         </StyledBackdrop>,
-        portalElement
+        modalRoot
       )}
     </Fragment>
   );

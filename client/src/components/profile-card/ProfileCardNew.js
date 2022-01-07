@@ -18,7 +18,7 @@ const ProfileCardNew = ({ onEditOpenHandler }) => {
 
   return (
     <ProfileCardStyled
-      data-testid="card"
+      data-testid="add-profile-card"
       onClick={() => onEditOpenHandler(null)}
       style={{ position: 'relative', cursor: 'pointer' }}
     >

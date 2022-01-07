@@ -91,13 +91,13 @@ exports[`should render UserCard correctly 1`] = `
     className="c2"
     data-testid="email"
   >
-    ali@g
+    ali@gmail.com
   </span>
   <span
     className="c2"
     data-testid="profiles"
   >
-    1
+    2
      profiles
   </span>
 </li>

@@ -1,15 +1,15 @@
-import { useSelector } from "react-redux";
+import { useSelector } from 'react-redux';
 
-import { ContainerStyled, MainHeading } from "../../GlobalStyles";
+import { ContainerStyled, MainHeading } from '../../GlobalStyles';
 
 import {
   DashboardCards,
   DashboardCard,
   DashboardCardHeading,
   DashboardCardQuantity,
-} from "./DashboardStyles";
+} from './DashboardStyles';
 
-function calculateAge(dateString) {
+export const calculateAge = (dateString) => {
   var today = new Date();
   var birthDate = new Date(dateString);
   var age = today.getFullYear() - birthDate.getFullYear();
@@ -18,7 +18,7 @@ function calculateAge(dateString) {
     age--;
   }
   return age;
-}
+};
 
 const Dashboard = () => {
   const users = useSelector((state) => state.users.entities);

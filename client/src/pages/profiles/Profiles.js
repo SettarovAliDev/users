@@ -1,15 +1,15 @@
-import { Fragment, useState } from "react";
-import { useSelector, useDispatch } from "react-redux";
-import { useParams } from "react-router-dom";
+import { Fragment, useState } from 'react';
+import { useSelector, useDispatch } from 'react-redux';
+import { useParams } from 'react-router-dom';
 
-import Spinner from "../../components/spinner/Spinner";
-import Modal from "../../components/modal/Modal";
-import EditUser from "../../components/edit-form/EditUser";
-import ProfileCards from "../../components/profile-cards/ProfileCards";
+import Spinner from '../../components/spinner/Spinner';
+import Modal from '../../components/modal/Modal';
+import EditUser from '../../components/edit-form/EditUser';
+import ProfileCards from '../../components/profile-cards/ProfileCards';
 
-import { deleteUser } from "../../store/usersSlice";
+import { deleteUser } from '../../store/usersSlice';
 
-import { ContainerStyled } from "../../GlobalStyles";
+import { ContainerStyled } from '../../GlobalStyles';
 import {
   ProfilesInfo,
   ProfilesDetail,
@@ -18,7 +18,7 @@ import {
   EditSvgStyled,
   DeleteSvgStyled,
   ProfilesHeading,
-} from "./ProfilesStyles";
+} from './ProfilesStyles';
 
 const Profiles = () => {
   const [isEditOpen, setIsEditOpen] = useState(false);
@@ -36,7 +36,7 @@ const Profiles = () => {
 
   const user = uniqueUser || currentUser;
 
-  const isAdmin = user?.roles.find((role) => role.name === "admin");
+  const isAdmin = user?.roles.find((role) => role.name === 'admin');
 
   const onEditOpenHandler = () => {
     setIsEditOpen(true);
@@ -72,7 +72,7 @@ const Profiles = () => {
             <Fragment>
               <ProfilesDetail>{user.username}</ProfilesDetail>
               <ProfilesDetail>{user.email}</ProfilesDetail>
-              <ProfilesStatus>{isAdmin ? "admin" : "user"}</ProfilesStatus>
+              <ProfilesStatus>{isAdmin ? 'admin' : 'user'}</ProfilesStatus>
               <ProfilesActions>
                 <EditSvgStyled onClick={onEditOpenHandler} />
                 <DeleteSvgStyled onClick={onDeleteUserHandler} />
