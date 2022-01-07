@@ -1,0 +1,83 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`renders big spinner 1`] = `
+.c0 {
+  height: 100vh;
+  width: 100%;
+  display: -webkit-box;
+  display: -webkit-flex;
+  display: -ms-flexbox;
+  display: flex;
+  -webkit-box-pack: center;
+  -webkit-justify-content: center;
+  -ms-flex-pack: center;
+  justify-content: center;
+  -webkit-align-items: center;
+  -webkit-box-align: center;
+  -ms-flex-align: center;
+  align-items: center;
+}
+
+.c1 {
+  display: inline-block;
+  width: 7rem;
+  height: 7rem;
+  border: 3px solid rgba(195,195,195,0.6);
+  border-radius: 50%;
+  border-top-color: #636767;
+  -webkit-animation: fkRsEG 1s ease-in-out infinite;
+  animation: fkRsEG 1s ease-in-out infinite;
+  -webkit-animation: fkRsEG 1s ease-in-out infinite;
+}
+
+<div
+  className="c0"
+  data-testid="spinner"
+>
+  <div
+    className="c1"
+    size="7rem"
+  />
+</div>
+`;
+
+exports[`renders spinner 1`] = `
+.c0 {
+  height: 100%;
+  width: 100%;
+  display: -webkit-box;
+  display: -webkit-flex;
+  display: -ms-flexbox;
+  display: flex;
+  -webkit-box-pack: center;
+  -webkit-justify-content: center;
+  -ms-flex-pack: center;
+  justify-content: center;
+  -webkit-align-items: center;
+  -webkit-box-align: center;
+  -ms-flex-align: center;
+  align-items: center;
+}
+
+.c1 {
+  display: inline-block;
+  width: 7rem;
+  height: 7rem;
+  border: 3px solid rgba(195,195,195,0.6);
+  border-radius: 50%;
+  border-top-color: #636767;
+  -webkit-animation: fkRsEG 1s ease-in-out infinite;
+  animation: fkRsEG 1s ease-in-out infinite;
+  -webkit-animation: fkRsEG 1s ease-in-out infinite;
+}
+
+<div
+  className="c0"
+  data-testid="spinner"
+>
+  <div
+    className="c1"
+    size="7rem"
+  />
+</div>
+`;

@@ -1,0 +1,104 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`should render UserCard correctly 1`] = `
+.c0 {
+  width: calc((100% - 3.2rem * 3) / 4);
+  display: -webkit-box;
+  display: -webkit-flex;
+  display: -ms-flexbox;
+  display: flex;
+  -webkit-flex-direction: column;
+  -ms-flex-direction: column;
+  flex-direction: column;
+  -webkit-align-items: center;
+  -webkit-box-align: center;
+  -ms-flex-align: center;
+  align-items: center;
+  padding: 3rem 5rem;
+  border-radius: 1.6rem;
+  background-color: var(--background-color-white);
+  color: var(--text-color-dark-2);
+  cursor: pointer;
+}
+
+.c0:hover {
+  background-color: #dfffdf;
+}
+
+.c0 > * {
+  text-overflow: ellipsis;
+  white-space: nowrap;
+  overflow: hidden;
+  width: 100%;
+  text-align: center;
+}
+
+.c0 > *:not(:last-child) {
+  margin-bottom: 2rem;
+}
+
+.c1 {
+  font-size: 2.4rem;
+  font-weight: 500;
+  -webkit-letter-spacing: 0.75px;
+  -moz-letter-spacing: 0.75px;
+  -ms-letter-spacing: 0.75px;
+  letter-spacing: 0.75px;
+}
+
+.c2 {
+  font-size: 2.4rem;
+  font-weight: 400;
+  -webkit-letter-spacing: 0.75px;
+  -moz-letter-spacing: 0.75px;
+  -ms-letter-spacing: 0.75px;
+  letter-spacing: 0.75px;
+}
+
+@media screen and (max-width:1679px) {
+  .c0 {
+    width: calc((100% - 3.2rem * 2) / 3);
+    min-width: 39.6rem;
+  }
+}
+
+@media screen and (max-width:1272px) {
+  .c0 {
+    width: calc((100% - 3.2rem) / 2);
+    min-width: 39.6rem;
+  }
+}
+
+@media screen and (max-width:860px) {
+  .c0 {
+    width: 100%;
+    min-width: 39.6rem;
+  }
+}
+
+<li
+  className="c0"
+  data-testid="card"
+  onClick={[Function]}
+>
+  <h3
+    className="c1"
+    data-testid="username"
+  >
+    ali
+  </h3>
+  <span
+    className="c2"
+    data-testid="email"
+  >
+    ali@g
+  </span>
+  <span
+    className="c2"
+    data-testid="profiles"
+  >
+    1
+     profiles
+  </span>
+</li>
+`;

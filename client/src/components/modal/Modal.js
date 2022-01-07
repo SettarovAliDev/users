@@ -1,9 +1,9 @@
-import { Fragment } from "react";
-import ReactDOM from "react-dom";
+import React, { Fragment } from 'react';
+import ReactDOM from 'react-dom';
 
-import { StyledBackdrop, StyledModal } from "./ModalStyles";
+import { StyledBackdrop, StyledModal } from './ModalStyles';
 
-const portalElement = document.getElementById("overlays");
+const portalElement = document.getElementById('overlays');
 
 const Modal = (props) => {
   return (

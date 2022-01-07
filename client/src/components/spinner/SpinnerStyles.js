@@ -1,4 +1,4 @@
-import styled from "styled-components";
+import styled, { keyframes } from "styled-components";
 
 export const SpinnerOverlay = styled.div`
   height: ${(props) => (props.big ? "100vh" : "100%")};
@@ -15,17 +15,14 @@ export const SpinnerContainer = styled.div`
   border: 3px solid rgba(195, 195, 195, 0.6);
   border-radius: 50%;
   border-top-color: #636767;
-  animation: spin 1s ease-in-out infinite;
-  -webkit-animation: spin 1s ease-in-out infinite;
-
-  @keyframes spin {
-    to {
-      -webkit-transform: rotate(360deg);
-    }
-  }
-  @-webkit-keyframes spin {
-    to {
-      -webkit-transform: rotate(360deg);
-    }
-  }
+  animation: ${(props) => spin} 1s ease-in-out infinite;
+  -webkit-animation: ${(props) => spin} 1s ease-in-out infinite;
 `;
+
+const spin = (props) => {
+  return keyframes`
+    to {
+      -webkit-transform: rotate(360deg);
+    }
+  `;
+};

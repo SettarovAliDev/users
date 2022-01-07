@@ -1,7 +1,7 @@
-import { createSlice, createAsyncThunk, isAnyOf } from "@reduxjs/toolkit";
-import usersApi from "../api/usersApi";
+import { createSlice, createAsyncThunk, isAnyOf } from '@reduxjs/toolkit';
+import usersApi from '../api/usersApi';
 
-import { fetchUsers, fetchUser } from "./usersSlice";
+import { fetchUsers, fetchUser } from './usersSlice';
 
 const authCallback =
   (route) =>
@@ -9,8 +9,8 @@ const authCallback =
     try {
       const response = await usersApi.post(`api/auth/${route}`, user, {
         headers: {
-          "Content-Type": "application/json",
-          Accept: "application/json",
+          'Content-Type': 'application/json',
+          Accept: 'application/json',
         },
       });
 
@@ -18,7 +18,7 @@ const authCallback =
         ? dispatch(fetchUsers())
         : dispatch(fetchUser(response.data.userId));
 
-      localStorage.setItem("token", JSON.stringify(response.data.jwt));
+      localStorage.setItem('token', JSON.stringify(response.data.jwt));
 
       return response.data;
     } catch (error) {
@@ -28,25 +28,25 @@ const authCallback =
   };
 
 export const registerUser = createAsyncThunk(
-  "auth/registerUser",
-  authCallback("signup")
+  'auth/registerUser',
+  authCallback('signup')
 );
 
 export const loginUserByPassword = createAsyncThunk(
-  "auth/loginUserByPassword",
-  authCallback("signin")
+  'auth/loginUserByPassword',
+  authCallback('signin')
 );
 
 export const loginUserByToken = createAsyncThunk(
-  "auth/loginUserByToken",
+  'auth/loginUserByToken',
   async (_, { dispatch, rejectWithValue }) => {
     try {
-      const token = JSON.parse(localStorage.getItem("token"));
-      const response = await usersApi.get("api/auth/login", {
+      const token = JSON.parse(localStorage.getItem('token'));
+      const response = await usersApi.get('api/auth/login', {
         headers: {
-          "Content-Type": "application/json",
-          Accept: "application/json",
-          "x-access-token": token,
+          'Content-Type': 'application/json',
+          Accept: 'application/json',
+          'x-access-token': token,
         },
       });
 
@@ -54,19 +54,19 @@ export const loginUserByToken = createAsyncThunk(
         ? dispatch(fetchUsers())
         : dispatch(fetchUser(response.data.userId));
 
-      localStorage.setItem("token", JSON.stringify(response.data.jwt));
+      localStorage.setItem('token', JSON.stringify(response.data.jwt));
 
       return response.data;
     } catch (error) {
       console.error(error.message);
-      localStorage.removeItem("token");
+      localStorage.removeItem('token');
       return rejectWithValue(error.response.data.message);
     }
   }
 );
 
 const authSlice = createSlice({
-  name: "auth",
+  name: 'auth',
   initialState: {
     userId: null,
     isAdmin: false,

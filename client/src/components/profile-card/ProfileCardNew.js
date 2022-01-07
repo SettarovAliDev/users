@@ -1,23 +1,26 @@
-import { Fragment } from "react";
-import { useSelector } from "react-redux";
+import { Fragment } from 'react';
+import { useSelector } from 'react-redux';
 
-import Spinner from "../spinner/Spinner";
+import Spinner from '../spinner/Spinner';
 
 import {
   ProfileCardStyled,
   AddCardContainer,
   AddCardText,
-} from "./ProfileCardStyles";
+} from './ProfileCardStyles';
 
-import { ReactComponent as AddCard } from "../../assets/add-card.svg";
+import { ReactComponent as AddCard } from '../../assets/add-card.svg';
 
 const ProfileCardNew = ({ onEditOpenHandler }) => {
-  const { addProfileLoading } = useSelector((state) => state.users.loaders);
+  const addProfileLoading = useSelector(
+    (state) => state.users.loaders.addProfileLoading
+  );
 
   return (
     <ProfileCardStyled
+      data-testid="card"
       onClick={() => onEditOpenHandler(null)}
-      style={{ position: "relative", cursor: "pointer" }}
+      style={{ position: 'relative', cursor: 'pointer' }}
     >
       <AddCardContainer>
         {addProfileLoading ? (
@@ -25,7 +28,7 @@ const ProfileCardNew = ({ onEditOpenHandler }) => {
         ) : (
           <Fragment>
             <AddCard />
-            <AddCardText>Crearte new profile</AddCardText>
+            <AddCardText>Create new profile</AddCardText>
           </Fragment>
         )}
       </AddCardContainer>

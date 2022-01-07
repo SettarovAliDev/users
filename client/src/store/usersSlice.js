@@ -1,13 +1,13 @@
-import { createSlice, createAsyncThunk } from "@reduxjs/toolkit";
-import usersApi from "../api/usersApi";
+import { createSlice, createAsyncThunk } from '@reduxjs/toolkit';
+import usersApi from '../api/usersApi';
 
-import { logoutCurrentUser, loginUserByToken } from "./authSlice";
+import { logoutCurrentUser, loginUserByToken } from './authSlice';
 
 export const fetchUsers = createAsyncThunk(
-  "users/fetchUsers",
+  'users/fetchUsers',
   async (_, { rejectWithValue }) => {
     try {
-      const response = await usersApi.get("api/users");
+      const response = await usersApi.get('api/users');
       return response.data;
     } catch (error) {
       console.error(error.message);
@@ -17,7 +17,7 @@ export const fetchUsers = createAsyncThunk(
 );
 
 export const fetchUser = createAsyncThunk(
-  "users/fetchUser",
+  'users/fetchUser',
   async (userId, { rejectWithValue }) => {
     try {
       const response = await usersApi.get(`api/users/${userId}`);
@@ -30,7 +30,7 @@ export const fetchUser = createAsyncThunk(
 );
 
 export const editUser = createAsyncThunk(
-  "users/editUser",
+  'users/editUser',
   async (user, { rejectWithValue, getState, dispatch }) => {
     try {
       const response = await usersApi.put(`api/users/${user.userId}`, user);
@@ -49,13 +49,13 @@ export const editUser = createAsyncThunk(
 );
 
 export const deleteUser = createAsyncThunk(
-  "users/deleteUser",
+  'users/deleteUser',
   async ({ userId, currentUserId }, { dispatch, rejectWithValue }) => {
     try {
       const response = await usersApi.delete(`api/users/${userId}`);
       const isCurrentUser = response.data === currentUserId;
       if (isCurrentUser) {
-        localStorage.removeItem("token");
+        localStorage.removeItem('token');
         dispatch(logoutCurrentUser());
       }
       return { userId: response.data, isCurrentUser };
@@ -67,10 +67,10 @@ export const deleteUser = createAsyncThunk(
 );
 
 export const addProfile = createAsyncThunk(
-  "users/addProfile",
+  'users/addProfile',
   async (profile, { rejectWithValue }) => {
     try {
-      const response = await usersApi.post("api/profiles", profile);
+      const response = await usersApi.post('api/profiles', profile);
       return { profile: response.data, userId: profile.userId };
     } catch (error) {
       console.error(error.message);
@@ -80,7 +80,7 @@ export const addProfile = createAsyncThunk(
 );
 
 export const editProfile = createAsyncThunk(
-  "users/editProfile",
+  'users/editProfile',
   async (profile, { rejectWithValue }) => {
     try {
       const response = await usersApi.put(
@@ -96,7 +96,7 @@ export const editProfile = createAsyncThunk(
 );
 
 export const deleteProfile = createAsyncThunk(
-  "users/deleteProfile",
+  'users/deleteProfile',
   async ({ userId, profileId }, { rejectWithValue }) => {
     try {
       const response = await usersApi.delete(`api/profiles/${profileId}`);
@@ -109,7 +109,7 @@ export const deleteProfile = createAsyncThunk(
 );
 
 const usersSlice = createSlice({
-  name: "users",
+  name: 'users',
   initialState: {
     entities: null,
     loaders: {
@@ -179,7 +179,7 @@ const usersSlice = createSlice({
       .addCase(addProfile.rejected, (state) => {
         state.loaders.addProfileLoading = false;
       })
-      .addCase("auth/logoutCurrentUser", (state, action) => {
+      .addCase('auth/logoutCurrentUser', (state, action) => {
         state.entities = null;
       });
   },

@@ -1,7 +1,7 @@
-import styled from "styled-components";
+import styled from 'styled-components';
 
-import { ReactComponent as CheckSvg } from "../../assets/check.svg";
-import { ReactComponent as CloseSvg } from "../../assets/close.svg";
+import { ReactComponent as CheckSvg } from '../../assets/check.svg';
+import { ReactComponent as CloseSvg } from '../../assets/close.svg';
 
 export const EditContainer = styled.div`
   display: flex;
@@ -13,19 +13,6 @@ export const EditForm = styled.form`
   flex-direction: column;
   width: 25rem;
   margin: 7rem 17rem;
-
-  .MuiFormControl-root {
-    margin: 2rem 0;
-  }
-
-  .MuiOutlinedInput-input {
-    font-size: 2rem;
-  }
-
-  .MuiSvgIcon-root {
-    width: 3rem;
-    height: 3rem;
-  }
 
   & > label {
     font-weight: 400;
@@ -43,7 +30,7 @@ export const EditForm = styled.form`
     border-bottom: 1px solid var(--text-color-dark-1);
     margin-bottom: 2.5rem;
 
-    &[type="checkbox"] {
+    &[type='checkbox'] {
       width: 1.5rem;
       height: 1.5rem;
       margin-right: 1.2rem;
@@ -51,7 +38,7 @@ export const EditForm = styled.form`
     }
   }
 
-  button:not(.MuiButtonBase-root) {
+  button {
     width: 10rem;
     height: 3.8rem;
     align-self: center;
