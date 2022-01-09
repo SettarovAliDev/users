@@ -11,11 +11,11 @@
 
 # misc
 /client/.DS_Store
-/client/.env
-/client/.env.local
-/client/.env.development.local
-/client/.env.test.local
-/client/.env.production.local
+# /client/.env
+# /client/.env.local
+# /client/.env.development.local
+# /client/.env.test.local
+# /client/.env.production.local
 
 /client/npm-debug.log*
 /client/yarn-debug.log*
@@ -27,4 +27,4 @@
 # testing
 /coverage
 
-/server/.env
+# /server/.env
