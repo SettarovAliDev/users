@@ -1,9 +1,12 @@
-import axios from "axios";
+import axios from 'axios';
 
 export default axios.create({
-  baseURL: "http://localhost:5000",
+  baseURL:
+    process.env.NODE_ENV === 'production'
+      ? 'https://itop1000.herokuapp.com'
+      : 'http://localhost:5000',
   headers: {
-    "Content-Type": "application/json",
-    Accept: "application/json",
+    'Content-Type': 'application/json',
+    Accept: 'application/json',
   },
 });
