@@ -11,16 +11,15 @@
     "client": "cd client && npm run start",
     "server": "nodemon server",
     "build": "cd client && npm run build",
-    "dev": "concurrently --kill-others-on-fail \"npm run server\" \"npm run client\"",
+    "dev": "cross-env NODE_ENV=development concurrently --kill-others-on-fail \"npm run server\" \"npm run client\"",
     "start": "node server",
     "heroku-postbuild": "cd client && npm install && npm install --only=dev --no-shrinkwrap && npm run build",
-    "test": "jest --coverage --watchAll --testPathPattern=server"
+    "test": "cross-env NODE_ENV=test jest --coverage --watchAll --testPathPattern=server --testTimeout=10000"
   },
   "jest": {
     "testEnvironment": "node",
     "coveragePathIgnorePatterns": [
-      "/node_modules/",
-      "/client/src/__tests__/"
+      "/node_modules/"
     ]
   },
   "author": "Settarov Ali",
@@ -38,6 +37,7 @@
   },
   "devDependencies": {
     "concurrently": "^6.4.0",
+    "cross-env": "^7.0.3",
     "jest": "^27.4.7",
     "nodemon": "^2.0.15",
     "supertest": "^6.1.6"
