@@ -1,7 +1,7 @@
-const db = require("../models");
-const config = require("../config/auth.config");
-const jwt = require("jsonwebtoken");
-const bcrypt = require("bcryptjs");
+const db = require('../models');
+const config = require('../config/auth.config');
+const jwt = require('jsonwebtoken');
+const bcrypt = require('bcryptjs');
 
 const User = db.user;
 const Role = db.role;
@@ -15,7 +15,7 @@ const sendUserData = async (user, res) => {
 
   const roles = await user.getRoles();
 
-  const isAdmin = roles.find((role) => role.name === "admin");
+  const isAdmin = roles.find((role) => role.name === 'admin');
 
   res.status(200).send({
     userId: user.id,
@@ -70,7 +70,7 @@ exports.signin = async (req, res) => {
     if (!passwordIsValid) {
       return res.status(401).send({
         accessToken: null,
-        message: "Invalid password",
+        message: 'Invalid password',
       });
     }
 
@@ -86,6 +86,6 @@ exports.login = async (req, res) => {
 
     sendUserData(user, res);
   } catch (error) {
-    res.status(500).send({ message: error.message });
+    res.status(401).send({ message: error.message });
   }
 };

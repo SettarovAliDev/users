@@ -28,27 +28,96 @@ export const rtlRender = (
   return render(ui, { wrapper: Wrapper, ...renderOptions });
 };
 
-it.skip('skip', () => {});
+// it.skip('skip', () => {});
+
+const usersDB = [
+  {
+    id: 1,
+    username: 'ali',
+    email: 'ali@g',
+    password: '123456',
+    isAdmin: true,
+  },
+  {
+    id: 2,
+    username: 'settar',
+    email: 'settar@g',
+    password: '123456',
+    isAdmin: false,
+  },
+];
+
+const jwt =
+  'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6MTIsImlhdCI6MTY0MTUwMTA5OCwiZXhwIjoxNjQ0MTc5NDk4fQ.HIZg_i3wVgNFXQPtnEjyfmZ6yobtjNMmNxrvgawDvks';
 
 export const handlers = [
   rest.post('http://localhost:5000/api/auth/signin', (req, res, ctx) => {
-    const isAdmin = req.body.email === 'ali@g';
+    const user = usersDB.find((user) => user.email === req.body.email);
+
+    if (!user) {
+      return res(
+        ctx.status(401),
+        ctx.json({
+          message: 'Invalid user',
+        })
+      );
+    }
+
+    const isPasswordCorrect = user.password === req.body.password;
+
+    if (!isPasswordCorrect) {
+      return res(
+        ctx.status(401),
+        ctx.json({
+          message: 'Invalid password',
+        }),
+        ctx.delay(150)
+      );
+    }
+
     return res(
       ctx.json({
-        isAdmin,
-        jwt: 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6MTIsImlhdCI6MTY0MTUwMTA5OCwiZXhwIjoxNjQ0MTc5NDk4fQ.HIZg_i3wVgNFXQPtnEjyfmZ6yobtjNMmNxrvgawDvks',
-        userId: isAdmin ? 1 : 2,
+        isAdmin: user.isAdmin,
+        jwt,
+        userId: user.id,
       }),
       ctx.delay(150)
     );
   }),
 
   rest.post('http://localhost:5000/api/auth/signup', (req, res, ctx) => {
+    const existingUsername = usersDB.find(
+      (user) => user.email === req.body.email
+    );
+    const existingUserEmail = usersDB.find(
+      (user) => user.email === req.body.email
+    );
     const isAdmin = req.body.roles.includes('admin');
+
+    if (existingUsername) {
+      return res(
+        ctx.status(401),
+        ctx.json({
+          message: 'Username is already in use',
+        }),
+        ctx.delay(150)
+      );
+    }
+
+    if (existingUserEmail) {
+      return res(
+        ctx.status(401),
+        ctx.json({
+          message: 'Email is already in use',
+        }),
+        ctx.delay(150)
+      );
+    }
+
     return res(
       ctx.json({
         isAdmin,
-        jwt: 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6MTIsImlhdCI6MTY0MTUwMTA5OCwiZXhwIjoxNjQ0MTc5NDk4fQ.HIZg_i3wVgNFXQPtnEjyfmZ6yobtjNMmNxrvgawDvks',
+        jwt,
         userId: isAdmin ? 1 : 3,
       }),
       ctx.delay(150)
@@ -56,10 +125,21 @@ export const handlers = [
   }),
 
   rest.get('http://localhost:5000/api/auth/login', (req, res, ctx) => {
+    const token = req.headers._headers['x-access-token'] === jwt;
+    if (!token) {
+      return res(
+        ctx.status(401),
+        ctx.json({
+          message: 'Token expired',
+        }),
+        ctx.delay(150)
+      );
+    }
+
     return res(
       ctx.json({
         isAdmin: true,
-        jwt: 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6MTIsImlhdCI6MTY0MTUwMTA5OCwiZXhwIjoxNjQ0MTc5NDk4fQ.HIZg_i3wVgNFXQPtnEjyfmZ6yobtjNMmNxrvgawDvks',
+        jwt: token,
         userId: 1,
       }),
       ctx.delay(150)
@@ -141,6 +221,68 @@ export const handlers = [
       return res(ctx.json(), ctx.delay(150));
     }
   ),
+
+  rest.put('http://localhost:5000/api/users/:userId', (req, res, ctx) => {
+    const { username, email, roles, userId } = req.body;
+    return res(
+      ctx.json({
+        id: userId,
+        username,
+        email,
+        password:
+          '$2a$08$p1SjDvWW06BIs.TnBPtNNunoOAXaNItrTkpuYl1LlhEks5dVhIdm2',
+        createdAt: '2022-01-04T19:24:54.475Z',
+        updatedAt: '2022-01-08T12:34:10.352Z',
+        roles:
+          roles.length === 2
+            ? [
+                {
+                  id: 1,
+                  name: 'user',
+                  createdAt: '2021-12-09T13:58:09.968Z',
+                  updatedAt: '2021-12-09T13:58:09.968Z',
+                  user_roles: {
+                    createdAt: '2022-01-04T19:24:54.683Z',
+                    updatedAt: '2022-01-04T19:24:54.683Z',
+                    roleId: 1,
+                    userId: 12,
+                  },
+                },
+                {
+                  id: 2,
+                  name: 'admin',
+                  createdAt: '2021-12-09T13:58:09.969Z',
+                  updatedAt: '2021-12-09T13:58:09.969Z',
+                  user_roles: {
+                    createdAt: '2022-01-04T19:24:54.683Z',
+                    updatedAt: '2022-01-04T19:24:54.683Z',
+                    roleId: 2,
+                    userId: 12,
+                  },
+                },
+              ]
+            : [
+                {
+                  id: 1,
+                  name: 'user',
+                  createdAt: '2021-12-09T13:58:09.968Z',
+                  updatedAt: '2021-12-09T13:58:09.968Z',
+                  user_roles: {
+                    createdAt: '2022-01-04T19:24:54.683Z',
+                    updatedAt: '2022-01-04T19:24:54.683Z',
+                    roleId: 1,
+                    userId: 12,
+                  },
+                },
+              ],
+        profiles: usersData.find((user) => user.id === userId).profiles,
+      }),
+      ctx.delay(150)
+    );
+  }),
+  rest.delete('http://localhost:5000/api/users/:userId', (req, res, ctx) => {
+    return res(ctx.json(), ctx.delay(150));
+  }),
 ];
 
 export const usersData = [

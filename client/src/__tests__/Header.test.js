@@ -57,28 +57,3 @@ it('should go to home page', () => {
 
   // TODO: check is route equal '/profiles'
 });
-
-it('should logout', () => {
-  rtlRender(<Header />, {
-    preloadedState: {
-      auth: {
-        userId: 2,
-        isAdmin: false,
-        usersLoaded: false,
-        loading: false,
-        errors: {
-          signUpError: null,
-          signInError: null,
-        },
-      },
-      users: {
-        entities: normalizedUsers,
-      },
-    },
-  });
-
-  const logoutLink = screen.getByTestId('logout');
-  fireEvent.click(logoutLink);
-
-  // TODO: check is route equal '/profiles'
-});

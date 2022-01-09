@@ -13,7 +13,15 @@
     "build": "cd client && npm run build",
     "dev": "concurrently --kill-others-on-fail \"npm run server\" \"npm run client\"",
     "start": "node server",
-    "heroku-postbuild": "cd client && npm install && npm install --only=dev --no-shrinkwrap && npm run build"
+    "heroku-postbuild": "cd client && npm install && npm install --only=dev --no-shrinkwrap && npm run build",
+    "test": "jest --coverage --watchAll --testPathPattern=server"
+  },
+  "jest": {
+    "testEnvironment": "node",
+    "coveragePathIgnorePatterns": [
+      "/node_modules/",
+      "/client/src/__tests__/"
+    ]
   },
   "author": "Settarov Ali",
   "license": "ISC",
@@ -30,6 +38,8 @@
   },
   "devDependencies": {
     "concurrently": "^6.4.0",
-    "nodemon": "^2.0.15"
+    "jest": "^27.4.7",
+    "nodemon": "^2.0.15",
+    "supertest": "^6.1.6"
   }
 }

@@ -154,7 +154,6 @@ const usersSlice = createSlice({
         };
       })
       .addCase(editUser.fulfilled, (state, action) => {
-        console.log(action.payload);
         const { id } = action.payload;
         state.entities[id] = action.payload;
         state.loaders.editUserLoading = false;

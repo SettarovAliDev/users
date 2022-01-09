@@ -74,8 +74,14 @@ const Profiles = () => {
               <ProfilesDetail>{user.email}</ProfilesDetail>
               <ProfilesStatus>{isAdmin ? 'admin' : 'user'}</ProfilesStatus>
               <ProfilesActions>
-                <EditSvgStyled onClick={onEditOpenHandler} />
-                <DeleteSvgStyled onClick={onDeleteUserHandler} />
+                <EditSvgStyled
+                  data-testid="edit-user"
+                  onClick={onEditOpenHandler}
+                />
+                <DeleteSvgStyled
+                  data-testid="delete-user"
+                  onClick={onDeleteUserHandler}
+                />
               </ProfilesActions>
             </Fragment>
           )}

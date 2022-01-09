@@ -1,8 +1,8 @@
-import { useState } from "react";
-import { useDispatch, useSelector } from "react-redux";
-import { useParams } from "react-router-dom";
+import { useState } from 'react';
+import { useDispatch, useSelector } from 'react-redux';
+import { useParams } from 'react-router-dom';
 
-import { editUser } from "../../store/usersSlice";
+import { editUser } from '../../store/usersSlice';
 
 import {
   EditContainer,
@@ -11,12 +11,12 @@ import {
   ButtonsContainer,
   CheckSvgStyled,
   CloseSvgStyled,
-} from "./EditStyles";
+} from './EditStyles';
 
 const EditUser = ({ onEditCloseHandler, user }) => {
-  const [username, setUsername] = useState(user?.username || "");
-  const [email, setEmail] = useState(user?.email || "");
-  const [role, setRole] = useState(user?.isAdmin ? "admin" : "user" || "");
+  const [username, setUsername] = useState(user?.username || '');
+  const [email, setEmail] = useState(user?.email || '');
+  const [role, setRole] = useState(user?.isAdmin ? 'admin' : 'user' || '');
 
   const { userId } = useParams();
 
@@ -43,7 +43,7 @@ const EditUser = ({ onEditCloseHandler, user }) => {
       editUser({
         username,
         email,
-        roles: role === "admin" ? ["user", "admin"] : ["user"],
+        roles: role === 'admin' ? ['user', 'admin'] : ['user'],
         userId: userId || currentUserId,
       })
     );
@@ -63,7 +63,7 @@ const EditUser = ({ onEditCloseHandler, user }) => {
           autoComplete="off"
           required
         />
-        <label htmlFor="gender">email:</label>
+        <label htmlFor="email">email:</label>
         <input
           value={email}
           onChange={onChangeEmailHandler}
@@ -75,22 +75,24 @@ const EditUser = ({ onEditCloseHandler, user }) => {
         <label htmlFor="role">role:</label>
         <EditRadio>
           <input
+            data-testid="role-u"
             type="radio"
             id="role-u"
             name="role"
             value="user"
-            checked={role === "user"}
+            checked={role === 'user'}
             onChange={onChangeRoleHandler}
             required
             disabled={!isAdmin}
           />
           <label htmlFor="role-u">user</label>
           <input
+            data-testid="role-a"
             type="radio"
             id="role-a"
             name="role"
             value="admin"
-            checked={role === "admin"}
+            checked={role === 'admin'}
             onChange={onChangeRoleHandler}
             required
             disabled={!isAdmin}
@@ -98,7 +100,7 @@ const EditUser = ({ onEditCloseHandler, user }) => {
           <label htmlFor="role-a">admin</label>
         </EditRadio>
         <ButtonsContainer>
-          <button type="submit">
+          <button data-testid="submit-edit-user" type="submit">
             <CheckSvgStyled />
           </button>
           <button type="button" onClick={onEditCloseHandler}>

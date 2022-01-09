@@ -17,6 +17,7 @@ import { loginUserByToken } from './store/authSlice';
 
 const App = () => {
   const dispatch = useDispatch();
+
   const { isAdmin, loading, usersLoaded } = useSelector((state) => state.auth);
 
   useEffect(() => {
