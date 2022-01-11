@@ -58,7 +58,7 @@ export const deleteUser = createAsyncThunk(
         localStorage.removeItem('token');
         dispatch(logoutCurrentUser());
       }
-      return { userId: response.data, isCurrentUser };
+      return { userId: response.data.userId, isCurrentUser };
     } catch (error) {
       console.error(error.message);
       return rejectWithValue(error.response.data.message);
@@ -100,7 +100,7 @@ export const deleteProfile = createAsyncThunk(
   async ({ userId, profileId }, { rejectWithValue }) => {
     try {
       const response = await usersApi.delete(`api/profiles/${profileId}`);
-      return { userId, profileId: response.data };
+      return { userId, profileId: response.data.profileId };
     } catch (error) {
       console.error(error.message);
       return rejectWithValue(error.response.data.message);

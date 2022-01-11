@@ -1,4 +1,4 @@
-const db = require("../models");
+const db = require('../models');
 
 const User = db.user;
 const Profile = db.profile;
@@ -28,7 +28,7 @@ exports.addProfile = async (req, res) => {
 
     res.status(200).send(addedProfile);
   } catch (error) {
-    res.status(500).send({ message: error.message });
+    res.status(404).send({ message: error.message });
   }
 };
 
@@ -55,7 +55,7 @@ exports.editProfile = async (req, res) => {
 
     res.status(200).send({ profile, userId: user[0].id });
   } catch (error) {
-    res.status(500).send({ message: error.message });
+    res.status(404).send({ message: error.message });
   }
 };
 
@@ -71,8 +71,8 @@ exports.deleteProfile = async (req, res) => {
 
     await profile.destroy();
 
-    res.status(200).send(profileId);
+    res.status(200).send({ profileId });
   } catch (error) {
-    res.status(500).send({ message: error.message });
+    res.status(404).send({ message: error.message });
   }
 };

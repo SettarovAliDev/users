@@ -14,7 +14,7 @@
     "dev": "cross-env NODE_ENV=development concurrently --kill-others-on-fail \"npm run server\" \"npm run client\"",
     "start": "node server",
     "heroku-postbuild": "cd client && npm install && npm install --only=dev --no-shrinkwrap && npm run build",
-    "test": "cross-env NODE_ENV=test jest --coverage --watchAll --testPathPattern=server --testTimeout=10000"
+    "test": "cross-env NODE_ENV=test jest --coverage --watchAll --testPathPattern=server --testTimeout=20000 --runInBand"
   },
   "jest": {
     "testEnvironment": "node",

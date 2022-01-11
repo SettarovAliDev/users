@@ -1,5 +1,5 @@
-const { user } = require("../models");
-const db = require("../models");
+const { user } = require('../models');
+const db = require('../models');
 
 const User = db.user;
 const Profile = db.profile;
@@ -11,9 +11,11 @@ exports.fetchUsers = async (req, res) => {
   try {
     const users = await User.findAll({ include: [Role, Profile] });
 
+    if (!users) throw new Error();
+
     res.status(200).send(users);
   } catch (error) {
-    res.status(500).send({ message: error.message });
+    res.status(404).send({ message: error.message });
   }
 };
 
@@ -28,9 +30,11 @@ exports.fetchUser = async (req, res) => {
       include: [Role, Profile],
     });
 
+    if (!user) throw new Error();
+
     res.status(200).send(user);
   } catch (error) {
-    res.status(500).send({ message: error.message });
+    res.status(404).send({ message: error.message });
   }
 };
 
@@ -70,7 +74,7 @@ exports.editUser = async (req, res) => {
 
     res.status(200).send(newUser);
   } catch (error) {
-    res.status(500).send({ message: error.message });
+    res.status(404).send({ message: error.message });
   }
 };
 
@@ -87,15 +91,12 @@ exports.deleteUser = async (req, res) => {
     const profiles = await user.getProfiles();
     const profileIds = profiles.map((profile) => profile.id);
 
-    console.log(profiles);
-    console.log(profileIds);
-
     await Profile.destroy({ where: { id: profileIds } });
 
     await user.destroy();
 
-    res.status(200).send(userId);
+    res.status(200).send({ userId });
   } catch (error) {
-    res.status(500).send({ message: error.message });
+    res.status(404).send({ message: error.message });
   }
 };

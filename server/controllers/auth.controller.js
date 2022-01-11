@@ -44,7 +44,7 @@ exports.signup = async (req, res, next) => {
 
     next();
   } catch (error) {
-    res.status(500).send({ message: error.message });
+    res.status(401).send({ message: error.message });
   }
 };
 
@@ -76,7 +76,7 @@ exports.signin = async (req, res) => {
 
     sendUserData(user, res);
   } catch (error) {
-    res.status(500).send({ message: error.message });
+    res.status(401).send({ message: error.message });
   }
 };
 

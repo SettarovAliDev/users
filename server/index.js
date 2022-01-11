@@ -49,7 +49,7 @@ if (process.env.NODE_ENV === 'production') {
   });
 }
 
-const start = async () => {
+const start = () => {
   try {
     if (process.env.NODE_ENV !== 'test') {
       app.listen(port, (error) => {

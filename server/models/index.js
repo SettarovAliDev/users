@@ -4,8 +4,6 @@ const config = require('../config/db.config.js');
 
 const envConfig = config[process.env.NODE_ENV];
 
-console.log(envConfig);
-
 const Sequelize = require('sequelize');
 const sequelize = new Sequelize(
   envConfig.DB,
