@@ -48,6 +48,12 @@ if (process.env.NODE_ENV !== 'test') {
   });
 }
 
+if (process.env.NODE_ENV === 'production') {
+  app.get('*', function (req, res) {
+    res.sendFile(path.join(__dirname, '../client/build', 'index.html'));
+  });
+}
+
 module.exports = {
   app,
   server,
