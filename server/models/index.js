@@ -1,5 +1,3 @@
-require('dotenv').config();
-
 const config = require('../config/db.config.js');
 
 const envConfig = config[process.env.NODE_ENV];

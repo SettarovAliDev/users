@@ -11,9 +11,9 @@ import Dashboard from './pages/dashboard/Dashboard';
 import Users from './pages/users/Users';
 import Profiles from './pages/profiles/Profiles';
 
-import { GlobalStyles } from './GlobalStyles';
-
 import { loginUserByToken } from './store/authSlice';
+
+import { GlobalStyles } from './GlobalStyles';
 
 const App = () => {
   const dispatch = useDispatch();

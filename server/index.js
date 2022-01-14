@@ -16,13 +16,10 @@ if (process.env.NODE_ENV === 'production') {
   app.use(express.static(path.join(__dirname, '../client/build')));
 }
 
-// DATABASE
+// SCRIPT TO CLEAR DATABASE
 // const db = require("./models");
 // const Role = db.role;
-
-// DELETE TABLES AND CREATE NEW
 // db.sequelize.sync({ force: true }).then(() => {
-//   console.log("Drop and Resync Database with { force: true }");
 //   initial();
 // });
 
@@ -43,25 +40,15 @@ require('./routes/auth.routes')(app);
 require('./routes/user.routes')(app);
 require('./routes/profile.routes')(app);
 
-if (process.env.NODE_ENV === 'production') {
-  app.get('*', function (req, res) {
-    res.sendFile(path.join(__dirname, '../client/build', 'index.html'));
+let server;
+
+if (process.env.NODE_ENV !== 'test') {
+  server = app.listen(port, () => {
+    console.log(`App listening on port ${port}`);
   });
 }
 
-const start = () => {
-  try {
-    if (process.env.NODE_ENV !== 'test') {
-      app.listen(port, (error) => {
-        if (error) throw error;
-        console.log(`App listening on port ${port}`);
-      });
-    }
-  } catch (e) {
-    console.error(e);
-  }
+module.exports = {
+  app,
+  server,
 };
-
-start();
-
-module.exports = app;

@@ -1,11 +1,7 @@
 {
-  "name": "users",
-  "version": "0.1.0",
+  "name": "itop1000-client",
+  "version": "1.0.0",
   "private": true,
-  "proxy": "http://localhost:5000",
-  "engines": {
-    "node": "14.x"
-  },
   "dependencies": {
     "@reduxjs/toolkit": "^1.6.2",
     "@testing-library/jest-dom": "^5.16.1",
@@ -48,5 +44,7 @@
     "jest-styled-components": "^7.0.8",
     "msw": "^0.36.3",
     "react-test-renderer": "^17.0.2"
-  }
+  },
+  "author": "Settarov Ali",
+  "license": "ISC"
 }
