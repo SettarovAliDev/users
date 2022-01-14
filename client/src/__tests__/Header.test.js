@@ -54,6 +54,4 @@ it('should go to home page', () => {
 
   const homeElement = screen.getByTestId('home');
   fireEvent.click(homeElement);
-
-  // TODO: check is route equal '/profiles'
 });

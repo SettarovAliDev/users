@@ -1,6 +1,5 @@
 import React from 'react';
 import { screen, fireEvent } from '@testing-library/react';
-
 import { setupServer } from 'msw/node';
 import 'jest-styled-components';
 import '@testing-library/jest-dom/extend-expect';
@@ -11,11 +10,8 @@ import { handlers, rtlRender } from './test-utils';
 const server = setupServer(...handlers);
 
 beforeEach(() => window.localStorage.removeItem('token'));
-
 beforeAll(() => server.listen());
-
 afterEach(() => server.resetHandlers());
-
 afterAll(() => server.close());
 
 const signIn = async (email, password) => {
@@ -281,9 +277,6 @@ it('should delete selected user', async () => {
 
   const deleteUserButton = screen.getByTestId('delete-user');
   fireEvent.click(deleteUserButton);
-
-  // const editedUser = await screen.findByText(/john@g/i);
-  // expect(editedUser).toBeInTheDocument();
 });
 
 it('should logout', async () => {

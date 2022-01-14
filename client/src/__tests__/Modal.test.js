@@ -1,7 +1,6 @@
 import React from "react";
 import ReactDOM from "react-dom";
 import renderer from "react-test-renderer";
-import { cleanup } from "@testing-library/react";
 import "jest-styled-components";
 
 import Modal from "../components/modal/Modal";
@@ -12,7 +11,6 @@ beforeAll(() => {
   });
 });
 
-afterEach(cleanup);
 afterEach(() => {
   ReactDOM.createPortal.mockClear();
 });
